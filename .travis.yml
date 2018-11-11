@@ -5,10 +5,11 @@ jdk:
 cache:
     directories:
         - $HOME/.m2'
+        - $HOME/.sonar/cache
 
 addons:
     sonarcloud:
         organization: "mkarpisek-github"
         
 install: true
-script: mvn clean package
+script: mvn clean package sonar:sonar
