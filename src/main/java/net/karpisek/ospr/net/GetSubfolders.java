@@ -12,8 +12,6 @@ package net.karpisek.ospr.net;
 
 import java.io.IOException;
 import java.io.StringReader;
-import java.nio.file.FileSystems;
-import java.nio.file.Files;
 import java.util.List;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.TimeoutException;
@@ -63,7 +61,6 @@ public class GetSubfolders {
 		ContentResponse response5 = httpClient.newRequest(url5).method(HttpMethod.GET).header("X-RequestDigest", authResult.getFormDigest()).send();
 		LOG.debug("statusCode={}", response5.getStatus());
 		String content5 = response5.getContentAsString();
-		Files.write(FileSystems.getDefault().getPath("D:\\Odbavit\\sharepoint\\response.xml"), content5.getBytes());
 		Verify.verify(Strings.emptyToNull(content5) != null, "response content does not contain data");
 		Document doc5 = builder.build(new StringReader(content5));
 
