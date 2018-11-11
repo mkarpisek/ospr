@@ -62,10 +62,10 @@ public class Ospr {
 		}
 		System.out.println("Start");
 		Stopwatch stopwatch = Stopwatch.createStarted();
-		String username = "test1@testovaci327.onmicrosoft.com";			 
-		String password = "Hoq38078";									
-		String sharepoint = "https://testovaci327.sharepoint.com";
-		String sharepointSite = "test1site";
+		String username = args[1];			 
+		String password = args[2];									
+		String sharepoint = args[0];
+		String sharepointSite = args[3];
 		String sharepointSiteEndpoint = sharepoint + "/sites/" + sharepointSite;
 		String stsEndpoint = "https://login.microsoftonline.com/extSTS.srf";
 		String browserUserAgent = "Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:17.0) Gecko/20100101 Firefox/17.0";
