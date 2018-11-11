@@ -10,11 +10,16 @@
  *******************************************************************************/
 package net.karpisek.ospr;
 
+import java.io.BufferedWriter;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.net.CookieStore;
 import java.net.HttpCookie;
+import java.nio.charset.Charset;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 
@@ -83,9 +88,14 @@ public class Ospr {
 			Stopwatch gettWithAllSubfoldersStopwatch = Stopwatch.createStarted();
 			List<Folder> folders = new GetWithAllSubfolders(authResult, sharepointSiteEndpoint, rootFolder).execute(httpClient);
 			LOG.info("getWithAllFoldersFinished count={} timeMs={}", folders.size(), gettWithAllSubfoldersStopwatch.elapsed(TimeUnit.MILLISECONDS));
-			folders.forEach(folder -> {
-				LOG.info(folder.toString());
-			});
+			Path path = Paths.get("folders.txt");
+			try (BufferedWriter writer = Files.newBufferedWriter(path, Charset.forName("UTF-8"))) {
+				for (Folder folder : folders) {
+					writer.write(folder.toString());
+					writer.newLine();
+				}
+			}		
+			LOG.info("foldersFileWritten path={}", path.toAbsolutePath());
 
 			LOG.info("End timeMs={}", stopwatch.elapsed(TimeUnit.MILLISECONDS));
 		} finally {
