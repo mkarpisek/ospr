@@ -32,6 +32,8 @@ import org.jdom2.filter.Filters;
 import org.jdom2.input.SAXBuilder;
 import org.jdom2.xpath.XPathExpression;
 import org.jdom2.xpath.XPathFactory;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import com.google.common.base.Charsets;
 import com.google.common.base.Stopwatch;
@@ -50,17 +52,19 @@ import com.google.common.net.UrlEscapers;
 //	https://erwinkoens.wordpress.com/2015/02/05/sharepoint-online-authentication-without-sharepoint-api/
 //	http://www.wictorwilen.se/Post/How-to-do-active-authentication-to-Office-365-and-SharePoint-Online.aspx
 public class Ospr {
+	private static final Logger LOG = LoggerFactory.getLogger(Ospr.class);
+
 	//usage 
 	public static void main(String[] args) throws Exception {
 		if(args.length != 4) {
-			System.out.println("Usage: java -jar ospr.jar  <sharepointUrl> <username> <password> <site>");
-			System.out.println("  <sharepointUrl> in format https://<yourdomain>.sharepoint.com");
-			System.out.println("  <userName> in format: <userName>@<yourdomain>.onmicrosoft.com");
-			System.out.println("  <password> for <username>");
-			System.out.println("  <site> is name of site on <yourdomain>.sharepoint.com for which we want to get file report");
+			LOG.info("Usage: java -jar ospr.jar  <sharepointUrl> <username> <password> <site>");
+			LOG.info("  <sharepointUrl> in format https://<yourdomain>.sharepoint.com");
+			LOG.info("  <userName> in format: <userName>@<yourdomain>.onmicrosoft.com");
+			LOG.info("  <password> for <username>");
+			LOG.info("  <site> is name of site on <yourdomain>.sharepoint.com for which we want to get file report");
 			return;
 		}
-		System.out.println("Start");
+		LOG.info("Start");
 		Stopwatch stopwatch = Stopwatch.createStarted();
 		String username = args[1];			 
 		String password = args[2];									
@@ -81,22 +85,22 @@ public class Ospr {
 		try {
 			httpClient.start();
 
-			System.out.println("## 1-rpsContextCookie.sh");
+			LOG.info("## 1-rpsContextCookie");
 			ContentResponse response1 = httpClient
 					.newRequest(sharepoint + "/_layouts/15/Authenticate.aspx?Source=" + UrlEscapers.urlFragmentEscaper().escape("sharepoint"))
 					.method(HttpMethod.GET).agent(browserUserAgent).send();
-			System.out.println(response1.getStatus());
-			System.out.println("cookies:");
-			httpClient.getCookieStore().getCookies().stream().forEach(each -> System.out.println("\t" + each.getName() + ": " + each.getValue()));
+			LOG.info("statusCode={}", response1.getStatus());
+			LOG.info("cookies:");
+			httpClient.getCookieStore().getCookies().stream().forEach(each -> LOG.info("\t" + each.getName() + ": " + each.getValue()));
 
-			System.out.println("## 2-sts.sh");
+			LOG.info("## 2-sts.sh");
 			String template = readResource("sts-request.xml");
 			Verify.verify(!Strings.nullToEmpty(template).trim().isEmpty(), "Failed to load template for sts-request");
 			String requestContent = template.replace("${USERNAME}", username).replace("${PASSWORD}", password).replace("${ENDPOINT}", sharepoint);
 			ContentResponse response2 = httpClient.newRequest(stsEndpoint).method(HttpMethod.POST).agent(browserUserAgent)
 					.content(new StringContentProvider(requestContent)).send();
 
-			System.out.println(response2.getStatus());
+			LOG.info("statusCode={}",response2.getStatus());
 			String content2 = response2.getContentAsString();
 			Verify.verify(Strings.emptyToNull(content2) != null, "response content does not contain data");
 
@@ -113,29 +117,29 @@ public class Ospr {
 			Verify.verify(!links.isEmpty(), "response does not contain wsse:BinarySecurityToken");
 			String binarySecurityToken = links.get(0).getText();
 			Verify.verify(!binarySecurityToken.isEmpty(), "binarySecurityToken should not be empty");
-			System.out.println("binarySecurityToken=" + binarySecurityToken);
+			LOG.info("binarySecurityToken=" + binarySecurityToken);
 
 			//
-			System.out.println("## 3-getAccessToken");
+			LOG.info("## 3-getAccessToken");
 			ContentResponse response3 = httpClient.newRequest(sharepoint + "/_forms/default.aspx?wa=wsignin1.0").method(HttpMethod.POST).agent(browserUserAgent)
 					.content(new StringContentProvider(binarySecurityToken)).send();
-			System.out.println(response3.getStatus());
-			System.out.println("cookies:");
-			httpClient.getCookieStore().getCookies().stream().forEach(each -> System.out.println("\t" + each.getName() + ": " + each.getValue()));
+			LOG.info("statusCode={}", response3.getStatus());
+			LOG.info("cookies:");
+			httpClient.getCookieStore().getCookies().stream().forEach(each -> LOG.info("\t" + each.getName() + ": " + each.getValue()));
 			HttpCookie rtFa = getCookie(httpClient.getCookieStore(), "rtFa");
 			HttpCookie fedAuth = getCookie(httpClient.getCookieStore(), "FedAuth");
-			System.out.println("rtFa=" + rtFa);
-			System.out.println("fedAuth=" + fedAuth);
+			LOG.info("rtFa=" + rtFa);
+			LOG.info("fedAuth=" + fedAuth);
 			Verify.verify(rtFa != null, "rtFa not found");
 			Verify.verify(fedAuth != null, "fedAuth not found");
 
-			System.out.println("## 4-getRequestDigest");
+			LOG.info("## 4-getRequestDigest");
 			ContentResponse response4 = httpClient.newRequest(sharepoint + "/_api/contextinfo").method(HttpMethod.POST).agent(browserUserAgent)
 					.content(new StringContentProvider(binarySecurityToken)).send();
-			System.out.println(response4.getStatus());
+			LOG.info("statusCode= {}", response4.getStatus());
 			String content4 = response4.getContentAsString();
 			Verify.verify(Strings.emptyToNull(content4) != null, "response content does not contain data");
-			System.out.println(content4);
+			LOG.info(content4);
 
 			Document doc4 = builder.build(new StringReader(content4));
 
@@ -145,13 +149,13 @@ public class Ospr {
 			Verify.verify(!links4.isEmpty(), "response does not contain d:FormDigestValue");
 			String formDigest = links.get(0).getText();
 			Verify.verify(!formDigest.isEmpty(), "formDigest should not be empty");
-			System.out.println("formDigest=" + formDigest);
+			LOG.info("formDigest=" + formDigest);
 
-			System.out.println("## 5-listSubfolders");
+			LOG.info("## 5-listSubfolders");
 			String url5 = sharepointSiteEndpoint + "/_api/Web/GetFolderByServerRelativeUrl(%27" + UrlEscapers.urlFragmentEscaper().escape(rootFolder)
 					+ "%27)/Folders";
 			ContentResponse response5 = httpClient.newRequest(url5).method(HttpMethod.GET).header("X-RequestDigest", formDigest).agent(browserUserAgent).send();
-			System.out.println(response5.getStatus());
+			LOG.info("statusCode={}", response5.getStatus());
 			String content5 = response5.getContentAsString();
 			Files.write(FileSystems.getDefault().getPath("D:\\Odbavit\\sharepoint\\response.xml"), content5.getBytes());
 			Verify.verify(Strings.emptyToNull(content4) != null, "response content does not contain data");
@@ -160,18 +164,18 @@ public class Ospr {
 			Namespace m = Namespace.getNamespace("m", "http://schemas.microsoft.com/ado/2007/08/dataservices/metadata");
 			XPathExpression<Element> expr5 = xFactory.compile("//m:properties", Filters.element(), null, m);
 			List<Element> links5 = expr5.evaluate(doc5);
-			System.out.println("//m:properties=" + links5.size());
+			LOG.info("//m:properties=" + links5.size());
 			int elementCount = 0;
 			for (Element properties : links5) {
-				System.out.println("\t[" + elementCount + "]");
+				LOG.info("\t[" + elementCount + "]");
 				for (String propertyName : Lists.newArrayList("Name", "ServerRelativeUrl", "TimeLastModified", "TimeCreated", "ItemCount")) {
 					String value = Strings.nullToEmpty(properties.getChildText(propertyName, d));
-					System.out.println("\t\t" + propertyName + ": '" + value + "'");
+					LOG.info("\t\t" + propertyName + ": '" + value + "'");
 				}
 				elementCount++;
 			}
 
-			System.out.println("End (t=" + stopwatch.elapsed(TimeUnit.MILLISECONDS) + "[ms])");
+			LOG.info("End (t=" + stopwatch.elapsed(TimeUnit.MILLISECONDS) + "[ms])");
 		} finally {
 			httpClient.stop();
 		}
