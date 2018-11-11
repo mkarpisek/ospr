@@ -1,0 +1,14 @@
+sudo: false
+language: java
+jdk:
+    - openjdk8
+cache:
+    directories:
+        - $HOME/.m2'
+
+addons:
+    sonarcloud:
+        organization: "mkarpisek-github"
+        
+install: true
+script: mvn clean package
