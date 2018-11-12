@@ -16,11 +16,9 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.net.CookieStore;
 import java.net.HttpCookie;
-import java.nio.charset.Charset;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.util.List;
 import java.util.concurrent.TimeUnit;
 
 import org.eclipse.jetty.client.HttpClient;
@@ -31,10 +29,12 @@ import com.google.common.base.Charsets;
 import com.google.common.base.Stopwatch;
 import com.google.common.io.CharStreams;
 
-import net.karpisek.ospr.net.Folder;
-import net.karpisek.ospr.net.GetWithAllSubfolders;
 import net.karpisek.ospr.net.SharepointOnlineAuthentication;
 import net.karpisek.ospr.net.SharepointOnlineAuthentication.Result;
+import net.karpisek.ospr.net.SpFile;
+import net.karpisek.ospr.net.SpFileVisitor;
+import net.karpisek.ospr.net.SpFiles;
+import net.karpisek.ospr.net.SpFolder;
 
 // Office 365 Enterprise E3 Trial can be registered here:
 //	https://sharepoint.stackexchange.com/questions/129573/create-a-free-sharepoint-online-site-office-365
@@ -84,18 +84,32 @@ public class Ospr {
 			Stopwatch authStopwatch = Stopwatch.createStarted();
 			Result authResult = auth.execute(httpClient);
 			LOG.info("authFinished timeMs={}",  authStopwatch.elapsed(TimeUnit.MILLISECONDS));
+			
+			Path fileTreeWalkFile = Paths.get("fileTreeWalk.txt");
+			try(BufferedWriter writer = Files.newBufferedWriter(fileTreeWalkFile)){
+				SpFiles.walkFileTree(httpClient, authResult, sharepointSiteEndpoint, rootFolder, new SpFileVisitor() {
+					@Override
+					public void preVisitFolder(SpFolder folder) throws IOException {
+						LOG.debug("preVisitDirectory={}", folder);
+						writer.write(folder.getServerRelativeUrl());
+						writer.newLine();
+					}
+	
+					@Override
+					public void visitFile(SpFile file) throws IOException {
+						LOG.debug("visitFile={}", file);
+						writer.write(file.getServerRelativeUrl());
+						writer.newLine();
+					}
+	
+					@Override
+					public void postVisitFolder(SpFolder folder) throws IOException {
+						LOG.debug("postVisitDirectory={}", folder);
+					}
+				});
+			}
+			LOG.info("FileTreeWalkDone output={}", fileTreeWalkFile.toAbsolutePath());
 			 
-			Stopwatch gettWithAllSubfoldersStopwatch = Stopwatch.createStarted();
-			List<Folder> folders = new GetWithAllSubfolders(authResult, sharepointSiteEndpoint, rootFolder).execute(httpClient);
-			LOG.info("getWithAllFoldersFinished count={} timeMs={}", folders.size(), gettWithAllSubfoldersStopwatch.elapsed(TimeUnit.MILLISECONDS));
-			Path path = Paths.get("folders.txt");
-			try (BufferedWriter writer = Files.newBufferedWriter(path, Charset.forName("UTF-8"))) {
-				for (Folder folder : folders) {
-					writer.write(folder.toString());
-					writer.newLine();
-				}
-			}		
-			LOG.info("foldersFileWritten path={}", path.toAbsolutePath());
 
 			LOG.info("End timeMs={}", stopwatch.elapsed(TimeUnit.MILLISECONDS));
 		} finally {

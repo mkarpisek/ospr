@@ -1,0 +1,253 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+    Copyright (c) 2018 Martin Karpisek and others.
+    All rights reserved. This program and the accompanying materials
+    are made available under the terms of the Eclipse Public License v2.0
+    which accompanies this distribution, and is available at
+    https://www.eclipse.org/legal/epl-v20.html
+   
+    Contributors:
+        Martin Karpisek <martin.karpisek@gmail.com> - initial API and implementation 
+ -->
+
+<entry xml:base="https://testovaci327.sharepoint.com/sites/test1site/_api/" xmlns="http://www.w3.org/2005/Atom" xmlns:d="http://schemas.microsoft.com/ado/2007/08/dataservices" xmlns:m="http://schemas.microsoft.com/ado/2007/08/dataservices/metadata" xmlns:georss="http://www.georss.org/georss" xmlns:gml="http://www.opengis.net/gml">
+    <id>https://testovaci327.sharepoint.com/sites/test1site/_api/Web/GetFolderByServerRelativePath(decodedurl='/sites/test1site/Shared Documents')</id>
+    <category term="SP.Folder" scheme="http://schemas.microsoft.com/ado/2007/08/dataservices/scheme" />
+    <link rel="edit" href="Web/GetFolderByServerRelativePath(decodedurl='/sites/test1site/Shared%20Documents')" />
+    <link rel="http://schemas.microsoft.com/ado/2007/08/dataservices/related/Files" type="application/atom+xml;type=feed" title="Files" href="Web/GetFolderByServerRelativePath(decodedurl='/sites/test1site/Shared%20Documents')/Files">
+        <m:inline>
+            <feed>
+                <id>07e81074-e784-474e-961f-54c4da6726d0</id>
+                <title />
+                <updated>2018-11-10T16:43:31Z</updated>
+                <entry>
+                    <id>https://testovaci327.sharepoint.com/sites/test1site/_api/Web/GetFileByServerRelativePath(decodedurl='/sites/test1site/Shared Documents/test1.txt')</id>
+                    <category term="SP.File" scheme="http://schemas.microsoft.com/ado/2007/08/dataservices/scheme" />
+                    <link rel="edit" href="Web/GetFileByServerRelativePath(decodedurl='/sites/test1site/Shared%20Documents/test1.txt')" />
+                    <link rel="http://schemas.microsoft.com/ado/2007/08/dataservices/related/Author" type="application/atom+xml;type=entry" title="Author" href="Web/GetFileByServerRelativePath(decodedurl='/sites/test1site/Shared%20Documents/test1.txt')/Author" />
+                    <link rel="http://schemas.microsoft.com/ado/2007/08/dataservices/related/CheckedOutByUser" type="application/atom+xml;type=entry" title="CheckedOutByUser" href="Web/GetFileByServerRelativePath(decodedurl='/sites/test1site/Shared%20Documents/test1.txt')/CheckedOutByUser" />
+                    <link rel="http://schemas.microsoft.com/ado/2007/08/dataservices/related/EffectiveInformationRightsManagementSettings" type="application/atom+xml;type=entry" title="EffectiveInformationRightsManagementSettings" href="Web/GetFileByServerRelativePath(decodedurl='/sites/test1site/Shared%20Documents/test1.txt')/EffectiveInformationRightsManagementSettings" />
+                    <link rel="http://schemas.microsoft.com/ado/2007/08/dataservices/related/InformationRightsManagementSettings" type="application/atom+xml;type=entry" title="InformationRightsManagementSettings" href="Web/GetFileByServerRelativePath(decodedurl='/sites/test1site/Shared%20Documents/test1.txt')/InformationRightsManagementSettings" />
+                    <link rel="http://schemas.microsoft.com/ado/2007/08/dataservices/related/ListItemAllFields" type="application/atom+xml;type=entry" title="ListItemAllFields" href="Web/GetFileByServerRelativePath(decodedurl='/sites/test1site/Shared%20Documents/test1.txt')/ListItemAllFields" />
+                    <link rel="http://schemas.microsoft.com/ado/2007/08/dataservices/related/LockedByUser" type="application/atom+xml;type=entry" title="LockedByUser" href="Web/GetFileByServerRelativePath(decodedurl='/sites/test1site/Shared%20Documents/test1.txt')/LockedByUser" />
+                    <link rel="http://schemas.microsoft.com/ado/2007/08/dataservices/related/ModifiedBy" type="application/atom+xml;type=entry" title="ModifiedBy" href="Web/GetFileByServerRelativePath(decodedurl='/sites/test1site/Shared%20Documents/test1.txt')/ModifiedBy" />
+                    <link rel="http://schemas.microsoft.com/ado/2007/08/dataservices/related/Properties" type="application/atom+xml;type=entry" title="Properties" href="Web/GetFileByServerRelativePath(decodedurl='/sites/test1site/Shared%20Documents/test1.txt')/Properties" />
+                    <link rel="http://schemas.microsoft.com/ado/2007/08/dataservices/related/VersionEvents" type="application/atom+xml;type=feed" title="VersionEvents" href="Web/GetFileByServerRelativePath(decodedurl='/sites/test1site/Shared%20Documents/test1.txt')/VersionEvents" />
+                    <link rel="http://schemas.microsoft.com/ado/2007/08/dataservices/related/Versions" type="application/atom+xml;type=feed" title="Versions" href="Web/GetFileByServerRelativePath(decodedurl='/sites/test1site/Shared%20Documents/test1.txt')/Versions" />
+                    <title />
+                    <updated>2018-11-10T16:43:31Z</updated>
+                    <author>
+                        <name />
+                    </author>
+                    <content type="application/xml">
+                        <m:properties>
+                            <d:CheckInComment></d:CheckInComment>
+                            <d:CheckOutType m:type="Edm.Int32">2</d:CheckOutType>
+                            <d:ContentTag>{0BCFFC1B-DFAC-40E3-8BDF-3307C6CDFB2C},2,2</d:ContentTag>
+                            <d:CustomizedPageStatus m:type="Edm.Int32">0</d:CustomizedPageStatus>
+                            <d:ETag>"{0BCFFC1B-DFAC-40E3-8BDF-3307C6CDFB2C},2"</d:ETag>
+                            <d:Exists m:type="Edm.Boolean">true</d:Exists>
+                            <d:IrmEnabled m:type="Edm.Boolean">false</d:IrmEnabled>
+                            <d:Length m:type="Edm.Int64">8</d:Length>
+                            <d:Level m:type="Edm.Byte">1</d:Level>
+                            <d:LinkingUri m:null="true" />
+                            <d:LinkingUrl></d:LinkingUrl>
+                            <d:MajorVersion m:type="Edm.Int32">1</d:MajorVersion>
+                            <d:MinorVersion m:type="Edm.Int32">0</d:MinorVersion>
+                            <d:Name>test1.txt</d:Name>
+                            <d:ServerRelativeUrl>/sites/test1site/Shared Documents/test1.txt</d:ServerRelativeUrl>
+                            <d:TimeCreated m:type="Edm.DateTime">2018-11-10T15:31:43Z</d:TimeCreated>
+                            <d:TimeLastModified m:type="Edm.DateTime">2018-11-10T15:31:44Z</d:TimeLastModified>
+                            <d:Title m:null="true" />
+                            <d:UIVersion m:type="Edm.Int32">512</d:UIVersion>
+                            <d:UIVersionLabel>1.0</d:UIVersionLabel>
+                            <d:UniqueId m:type="Edm.Guid">0bcffc1b-dfac-40e3-8bdf-3307c6cdfb2c</d:UniqueId>
+                        </m:properties>
+                    </content>
+                </entry>
+                <entry>
+                    <id>https://testovaci327.sharepoint.com/sites/test1site/_api/Web/GetFileByServerRelativePath(decodedurl='/sites/test1site/Shared Documents/test2.txt')</id>
+                    <category term="SP.File" scheme="http://schemas.microsoft.com/ado/2007/08/dataservices/scheme" />
+                    <link rel="edit" href="Web/GetFileByServerRelativePath(decodedurl='/sites/test1site/Shared%20Documents/test2.txt')" />
+                    <link rel="http://schemas.microsoft.com/ado/2007/08/dataservices/related/Author" type="application/atom+xml;type=entry" title="Author" href="Web/GetFileByServerRelativePath(decodedurl='/sites/test1site/Shared%20Documents/test2.txt')/Author" />
+                    <link rel="http://schemas.microsoft.com/ado/2007/08/dataservices/related/CheckedOutByUser" type="application/atom+xml;type=entry" title="CheckedOutByUser" href="Web/GetFileByServerRelativePath(decodedurl='/sites/test1site/Shared%20Documents/test2.txt')/CheckedOutByUser" />
+                    <link rel="http://schemas.microsoft.com/ado/2007/08/dataservices/related/EffectiveInformationRightsManagementSettings" type="application/atom+xml;type=entry" title="EffectiveInformationRightsManagementSettings" href="Web/GetFileByServerRelativePath(decodedurl='/sites/test1site/Shared%20Documents/test2.txt')/EffectiveInformationRightsManagementSettings" />
+                    <link rel="http://schemas.microsoft.com/ado/2007/08/dataservices/related/InformationRightsManagementSettings" type="application/atom+xml;type=entry" title="InformationRightsManagementSettings" href="Web/GetFileByServerRelativePath(decodedurl='/sites/test1site/Shared%20Documents/test2.txt')/InformationRightsManagementSettings" />
+                    <link rel="http://schemas.microsoft.com/ado/2007/08/dataservices/related/ListItemAllFields" type="application/atom+xml;type=entry" title="ListItemAllFields" href="Web/GetFileByServerRelativePath(decodedurl='/sites/test1site/Shared%20Documents/test2.txt')/ListItemAllFields" />
+                    <link rel="http://schemas.microsoft.com/ado/2007/08/dataservices/related/LockedByUser" type="application/atom+xml;type=entry" title="LockedByUser" href="Web/GetFileByServerRelativePath(decodedurl='/sites/test1site/Shared%20Documents/test2.txt')/LockedByUser" />
+                    <link rel="http://schemas.microsoft.com/ado/2007/08/dataservices/related/ModifiedBy" type="application/atom+xml;type=entry" title="ModifiedBy" href="Web/GetFileByServerRelativePath(decodedurl='/sites/test1site/Shared%20Documents/test2.txt')/ModifiedBy" />
+                    <link rel="http://schemas.microsoft.com/ado/2007/08/dataservices/related/Properties" type="application/atom+xml;type=entry" title="Properties" href="Web/GetFileByServerRelativePath(decodedurl='/sites/test1site/Shared%20Documents/test2.txt')/Properties" />
+                    <link rel="http://schemas.microsoft.com/ado/2007/08/dataservices/related/VersionEvents" type="application/atom+xml;type=feed" title="VersionEvents" href="Web/GetFileByServerRelativePath(decodedurl='/sites/test1site/Shared%20Documents/test2.txt')/VersionEvents" />
+                    <link rel="http://schemas.microsoft.com/ado/2007/08/dataservices/related/Versions" type="application/atom+xml;type=feed" title="Versions" href="Web/GetFileByServerRelativePath(decodedurl='/sites/test1site/Shared%20Documents/test2.txt')/Versions" />
+                    <title />
+                    <updated>2018-11-10T16:43:31Z</updated>
+                    <author>
+                        <name />
+                    </author>
+                    <content type="application/xml">
+                        <m:properties>
+                            <d:CheckInComment></d:CheckInComment>
+                            <d:CheckOutType m:type="Edm.Int32">2</d:CheckOutType>
+                            <d:ContentTag>{4A7BA537-59B9-48BB-A94B-66E379F19505},2,2</d:ContentTag>
+                            <d:CustomizedPageStatus m:type="Edm.Int32">0</d:CustomizedPageStatus>
+                            <d:ETag>"{4A7BA537-59B9-48BB-A94B-66E379F19505},2"</d:ETag>
+                            <d:Exists m:type="Edm.Boolean">true</d:Exists>
+                            <d:IrmEnabled m:type="Edm.Boolean">false</d:IrmEnabled>
+                            <d:Length m:type="Edm.Int64">8</d:Length>
+                            <d:Level m:type="Edm.Byte">1</d:Level>
+                            <d:LinkingUri m:null="true" />
+                            <d:LinkingUrl></d:LinkingUrl>
+                            <d:MajorVersion m:type="Edm.Int32">1</d:MajorVersion>
+                            <d:MinorVersion m:type="Edm.Int32">0</d:MinorVersion>
+                            <d:Name>test2.txt</d:Name>
+                            <d:ServerRelativeUrl>/sites/test1site/Shared Documents/test2.txt</d:ServerRelativeUrl>
+                            <d:TimeCreated m:type="Edm.DateTime">2018-11-10T15:31:43Z</d:TimeCreated>
+                            <d:TimeLastModified m:type="Edm.DateTime">2018-11-10T15:31:44Z</d:TimeLastModified>
+                            <d:Title m:null="true" />
+                            <d:UIVersion m:type="Edm.Int32">512</d:UIVersion>
+                            <d:UIVersionLabel>1.0</d:UIVersionLabel>
+                            <d:UniqueId m:type="Edm.Guid">4a7ba537-59b9-48bb-a94b-66e379f19505</d:UniqueId>
+                        </m:properties>
+                    </content>
+                </entry>
+                <entry>
+                    <id>https://testovaci327.sharepoint.com/sites/test1site/_api/Web/GetFileByServerRelativePath(decodedurl='/sites/test1site/Shared Documents/test3.txt')</id>
+                    <category term="SP.File" scheme="http://schemas.microsoft.com/ado/2007/08/dataservices/scheme" />
+                    <link rel="edit" href="Web/GetFileByServerRelativePath(decodedurl='/sites/test1site/Shared%20Documents/test3.txt')" />
+                    <link rel="http://schemas.microsoft.com/ado/2007/08/dataservices/related/Author" type="application/atom+xml;type=entry" title="Author" href="Web/GetFileByServerRelativePath(decodedurl='/sites/test1site/Shared%20Documents/test3.txt')/Author" />
+                    <link rel="http://schemas.microsoft.com/ado/2007/08/dataservices/related/CheckedOutByUser" type="application/atom+xml;type=entry" title="CheckedOutByUser" href="Web/GetFileByServerRelativePath(decodedurl='/sites/test1site/Shared%20Documents/test3.txt')/CheckedOutByUser" />
+                    <link rel="http://schemas.microsoft.com/ado/2007/08/dataservices/related/EffectiveInformationRightsManagementSettings" type="application/atom+xml;type=entry" title="EffectiveInformationRightsManagementSettings" href="Web/GetFileByServerRelativePath(decodedurl='/sites/test1site/Shared%20Documents/test3.txt')/EffectiveInformationRightsManagementSettings" />
+                    <link rel="http://schemas.microsoft.com/ado/2007/08/dataservices/related/InformationRightsManagementSettings" type="application/atom+xml;type=entry" title="InformationRightsManagementSettings" href="Web/GetFileByServerRelativePath(decodedurl='/sites/test1site/Shared%20Documents/test3.txt')/InformationRightsManagementSettings" />
+                    <link rel="http://schemas.microsoft.com/ado/2007/08/dataservices/related/ListItemAllFields" type="application/atom+xml;type=entry" title="ListItemAllFields" href="Web/GetFileByServerRelativePath(decodedurl='/sites/test1site/Shared%20Documents/test3.txt')/ListItemAllFields" />
+                    <link rel="http://schemas.microsoft.com/ado/2007/08/dataservices/related/LockedByUser" type="application/atom+xml;type=entry" title="LockedByUser" href="Web/GetFileByServerRelativePath(decodedurl='/sites/test1site/Shared%20Documents/test3.txt')/LockedByUser" />
+                    <link rel="http://schemas.microsoft.com/ado/2007/08/dataservices/related/ModifiedBy" type="application/atom+xml;type=entry" title="ModifiedBy" href="Web/GetFileByServerRelativePath(decodedurl='/sites/test1site/Shared%20Documents/test3.txt')/ModifiedBy" />
+                    <link rel="http://schemas.microsoft.com/ado/2007/08/dataservices/related/Properties" type="application/atom+xml;type=entry" title="Properties" href="Web/GetFileByServerRelativePath(decodedurl='/sites/test1site/Shared%20Documents/test3.txt')/Properties" />
+                    <link rel="http://schemas.microsoft.com/ado/2007/08/dataservices/related/VersionEvents" type="application/atom+xml;type=feed" title="VersionEvents" href="Web/GetFileByServerRelativePath(decodedurl='/sites/test1site/Shared%20Documents/test3.txt')/VersionEvents" />
+                    <link rel="http://schemas.microsoft.com/ado/2007/08/dataservices/related/Versions" type="application/atom+xml;type=feed" title="Versions" href="Web/GetFileByServerRelativePath(decodedurl='/sites/test1site/Shared%20Documents/test3.txt')/Versions" />
+                    <title />
+                    <updated>2018-11-10T16:43:31Z</updated>
+                    <author>
+                        <name />
+                    </author>
+                    <content type="application/xml">
+                        <m:properties>
+                            <d:CheckInComment></d:CheckInComment>
+                            <d:CheckOutType m:type="Edm.Int32">2</d:CheckOutType>
+                            <d:ContentTag>{829F9E43-5F7B-43FD-BF4A-F399A4748BCB},2,2</d:ContentTag>
+                            <d:CustomizedPageStatus m:type="Edm.Int32">0</d:CustomizedPageStatus>
+                            <d:ETag>"{829F9E43-5F7B-43FD-BF4A-F399A4748BCB},2"</d:ETag>
+                            <d:Exists m:type="Edm.Boolean">true</d:Exists>
+                            <d:IrmEnabled m:type="Edm.Boolean">false</d:IrmEnabled>
+                            <d:Length m:type="Edm.Int64">8</d:Length>
+                            <d:Level m:type="Edm.Byte">1</d:Level>
+                            <d:LinkingUri m:null="true" />
+                            <d:LinkingUrl></d:LinkingUrl>
+                            <d:MajorVersion m:type="Edm.Int32">1</d:MajorVersion>
+                            <d:MinorVersion m:type="Edm.Int32">0</d:MinorVersion>
+                            <d:Name>test3.txt</d:Name>
+                            <d:ServerRelativeUrl>/sites/test1site/Shared Documents/test3.txt</d:ServerRelativeUrl>
+                            <d:TimeCreated m:type="Edm.DateTime">2018-11-10T15:31:43Z</d:TimeCreated>
+                            <d:TimeLastModified m:type="Edm.DateTime">2018-11-10T15:31:44Z</d:TimeLastModified>
+                            <d:Title m:null="true" />
+                            <d:UIVersion m:type="Edm.Int32">512</d:UIVersion>
+                            <d:UIVersionLabel>1.0</d:UIVersionLabel>
+                            <d:UniqueId m:type="Edm.Guid">829f9e43-5f7b-43fd-bf4a-f399a4748bcb</d:UniqueId>
+                        </m:properties>
+                    </content>
+                </entry>
+            </feed>
+        </m:inline>
+    </link>
+    <link rel="http://schemas.microsoft.com/ado/2007/08/dataservices/related/ListItemAllFields" type="application/atom+xml;type=entry" title="ListItemAllFields" href="Web/GetFolderByServerRelativePath(decodedurl='/sites/test1site/Shared%20Documents')/ListItemAllFields" />
+    <link rel="http://schemas.microsoft.com/ado/2007/08/dataservices/related/ParentFolder" type="application/atom+xml;type=entry" title="ParentFolder" href="Web/GetFolderByServerRelativePath(decodedurl='/sites/test1site/Shared%20Documents')/ParentFolder" />
+    <link rel="http://schemas.microsoft.com/ado/2007/08/dataservices/related/Properties" type="application/atom+xml;type=entry" title="Properties" href="Web/GetFolderByServerRelativePath(decodedurl='/sites/test1site/Shared%20Documents')/Properties" />
+    <link rel="http://schemas.microsoft.com/ado/2007/08/dataservices/related/StorageMetrics" type="application/atom+xml;type=entry" title="StorageMetrics" href="Web/GetFolderByServerRelativePath(decodedurl='/sites/test1site/Shared%20Documents')/StorageMetrics" />
+    <link rel="http://schemas.microsoft.com/ado/2007/08/dataservices/related/Folders" type="application/atom+xml;type=feed" title="Folders" href="Web/GetFolderByServerRelativePath(decodedurl='/sites/test1site/Shared%20Documents')/Folders">
+        <m:inline>
+            <feed>
+                <id>fab4f0b0-680d-4415-bf4d-90081f58b28b</id>
+                <title />
+                <updated>2018-11-10T16:43:31Z</updated>
+                <entry>
+                    <id>https://testovaci327.sharepoint.com/sites/test1site/_api/Web/GetFolderByServerRelativePath(decodedurl='/sites/test1site/Shared Documents/folder1')</id>
+                    <category term="SP.Folder" scheme="http://schemas.microsoft.com/ado/2007/08/dataservices/scheme" />
+                    <link rel="edit" href="Web/GetFolderByServerRelativePath(decodedurl='/sites/test1site/Shared%20Documents/folder1')" />
+                    <link rel="http://schemas.microsoft.com/ado/2007/08/dataservices/related/Files" type="application/atom+xml;type=feed" title="Files" href="Web/GetFolderByServerRelativePath(decodedurl='/sites/test1site/Shared%20Documents/folder1')/Files" />
+                    <link rel="http://schemas.microsoft.com/ado/2007/08/dataservices/related/ListItemAllFields" type="application/atom+xml;type=entry" title="ListItemAllFields" href="Web/GetFolderByServerRelativePath(decodedurl='/sites/test1site/Shared%20Documents/folder1')/ListItemAllFields" />
+                    <link rel="http://schemas.microsoft.com/ado/2007/08/dataservices/related/ParentFolder" type="application/atom+xml;type=entry" title="ParentFolder" href="Web/GetFolderByServerRelativePath(decodedurl='/sites/test1site/Shared%20Documents/folder1')/ParentFolder" />
+                    <link rel="http://schemas.microsoft.com/ado/2007/08/dataservices/related/Properties" type="application/atom+xml;type=entry" title="Properties" href="Web/GetFolderByServerRelativePath(decodedurl='/sites/test1site/Shared%20Documents/folder1')/Properties" />
+                    <link rel="http://schemas.microsoft.com/ado/2007/08/dataservices/related/StorageMetrics" type="application/atom+xml;type=entry" title="StorageMetrics" href="Web/GetFolderByServerRelativePath(decodedurl='/sites/test1site/Shared%20Documents/folder1')/StorageMetrics" />
+                    <link rel="http://schemas.microsoft.com/ado/2007/08/dataservices/related/Folders" type="application/atom+xml;type=feed" title="Folders" href="Web/GetFolderByServerRelativePath(decodedurl='/sites/test1site/Shared%20Documents/folder1')/Folders" />
+                    <title />
+                    <updated>2018-11-10T16:43:31Z</updated>
+                    <author>
+                        <name />
+                    </author>
+                    <content type="application/xml">
+                        <m:properties>
+                            <d:Exists m:type="Edm.Boolean">true</d:Exists>
+                            <d:IsWOPIEnabled m:type="Edm.Boolean">false</d:IsWOPIEnabled>
+                            <d:ItemCount m:type="Edm.Int32">2</d:ItemCount>
+                            <d:Name>folder1</d:Name>
+                            <d:ProgID m:null="true" />
+                            <d:ServerRelativeUrl>/sites/test1site/Shared Documents/folder1</d:ServerRelativeUrl>
+                            <d:TimeCreated m:type="Edm.DateTime">2018-11-10T16:25:33Z</d:TimeCreated>
+                            <d:TimeLastModified m:type="Edm.DateTime">2018-11-10T16:39:28Z</d:TimeLastModified>
+                            <d:UniqueId m:type="Edm.Guid">e5bc70d7-ead6-4569-83f0-62a3dcfc39cc</d:UniqueId>
+                            <d:WelcomePage></d:WelcomePage>
+                        </m:properties>
+                    </content>
+                </entry>
+                <entry>
+                    <id>https://testovaci327.sharepoint.com/sites/test1site/_api/Web/GetFolderByServerRelativePath(decodedurl='/sites/test1site/Shared Documents/Forms')</id>
+                    <category term="SP.Folder" scheme="http://schemas.microsoft.com/ado/2007/08/dataservices/scheme" />
+                    <link rel="edit" href="Web/GetFolderByServerRelativePath(decodedurl='/sites/test1site/Shared%20Documents/Forms')" />
+                    <link rel="http://schemas.microsoft.com/ado/2007/08/dataservices/related/Files" type="application/atom+xml;type=feed" title="Files" href="Web/GetFolderByServerRelativePath(decodedurl='/sites/test1site/Shared%20Documents/Forms')/Files" />
+                    <link rel="http://schemas.microsoft.com/ado/2007/08/dataservices/related/ListItemAllFields" type="application/atom+xml;type=entry" title="ListItemAllFields" href="Web/GetFolderByServerRelativePath(decodedurl='/sites/test1site/Shared%20Documents/Forms')/ListItemAllFields" />
+                    <link rel="http://schemas.microsoft.com/ado/2007/08/dataservices/related/ParentFolder" type="application/atom+xml;type=entry" title="ParentFolder" href="Web/GetFolderByServerRelativePath(decodedurl='/sites/test1site/Shared%20Documents/Forms')/ParentFolder" />
+                    <link rel="http://schemas.microsoft.com/ado/2007/08/dataservices/related/Properties" type="application/atom+xml;type=entry" title="Properties" href="Web/GetFolderByServerRelativePath(decodedurl='/sites/test1site/Shared%20Documents/Forms')/Properties" />
+                    <link rel="http://schemas.microsoft.com/ado/2007/08/dataservices/related/StorageMetrics" type="application/atom+xml;type=entry" title="StorageMetrics" href="Web/GetFolderByServerRelativePath(decodedurl='/sites/test1site/Shared%20Documents/Forms')/StorageMetrics" />
+                    <link rel="http://schemas.microsoft.com/ado/2007/08/dataservices/related/Folders" type="application/atom+xml;type=feed" title="Folders" href="Web/GetFolderByServerRelativePath(decodedurl='/sites/test1site/Shared%20Documents/Forms')/Folders" />
+                    <title />
+                    <updated>2018-11-10T16:43:31Z</updated>
+                    <author>
+                        <name />
+                    </author>
+                    <content type="application/xml">
+                        <m:properties>
+                            <d:Exists m:type="Edm.Boolean">true</d:Exists>
+                            <d:IsWOPIEnabled m:type="Edm.Boolean">false</d:IsWOPIEnabled>
+                            <d:ItemCount m:type="Edm.Int32">0</d:ItemCount>
+                            <d:Name>Forms</d:Name>
+                            <d:ProgID m:null="true" />
+                            <d:ServerRelativeUrl>/sites/test1site/Shared Documents/Forms</d:ServerRelativeUrl>
+                            <d:TimeCreated m:type="Edm.DateTime">2018-10-27T08:08:40Z</d:TimeCreated>
+                            <d:TimeLastModified m:type="Edm.DateTime">2018-10-27T08:08:40Z</d:TimeLastModified>
+                            <d:UniqueId m:type="Edm.Guid">2a2a4661-1f06-4c13-9f8f-b0c505610e18</d:UniqueId>
+                            <d:WelcomePage></d:WelcomePage>
+                        </m:properties>
+                    </content>
+                </entry>
+            </feed>
+        </m:inline>
+    </link>
+    <title />
+    <updated>2018-11-10T16:43:31Z</updated>
+    <author>
+        <name />
+    </author>
+    <content type="application/xml">
+        <m:properties>
+            <d:Exists m:type="Edm.Boolean">true</d:Exists>
+            <d:IsWOPIEnabled m:type="Edm.Boolean">false</d:IsWOPIEnabled>
+            <d:ItemCount m:type="Edm.Int32">4</d:ItemCount>
+            <d:Name>Shared Documents</d:Name>
+            <d:ProgID m:null="true" />
+            <d:ServerRelativeUrl>/sites/test1site/Shared Documents</d:ServerRelativeUrl>
+            <d:TimeCreated m:type="Edm.DateTime">2018-10-27T08:08:40Z</d:TimeCreated>
+            <d:TimeLastModified m:type="Edm.DateTime">2018-11-10T16:25:33Z</d:TimeLastModified>
+            <d:UniqueId m:type="Edm.Guid">2669020c-3da6-4926-b145-85b19ec4df60</d:UniqueId>
+            <d:WelcomePage></d:WelcomePage>
+        </m:properties>
+    </content>
+</entry>

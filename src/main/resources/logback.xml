@@ -9,6 +9,7 @@
         Martin Karpisek <martin.karpisek@gmail.com> - initial API and implementation 
  -->
 <configuration>
+	<variable name="logLevel" value="${logLevel:-INFO}" />
 	<appender name="STDOUT"
 		class="ch.qos.logback.core.ConsoleAppender">
 		<encoder>
@@ -16,7 +17,7 @@
 		</encoder>
 	</appender>
 
-	<root level="info">
+	<root level="${logLevel}">
 		<appender-ref ref="STDOUT" />
 	</root>
 </configuration>

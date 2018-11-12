@@ -19,6 +19,7 @@ import java.util.concurrent.TimeoutException;
 import org.eclipse.jetty.client.HttpClient;
 import org.eclipse.jetty.client.api.ContentResponse;
 import org.eclipse.jetty.http.HttpMethod;
+import org.eclipse.jetty.http.HttpStatus;
 import org.jdom2.Document;
 import org.jdom2.Element;
 import org.jdom2.JDOMException;
@@ -53,35 +54,68 @@ public class GetFolder {
 		this.folder = folder;
 	}
 	
-	public Folder execute(HttpClient httpClient) throws InterruptedException, TimeoutException, ExecutionException, IOException, JDOMException {
-		XPathFactory xFactory = XPathFactory.instance();
+	public SpFolder execute(HttpClient httpClient) throws InterruptedException, TimeoutException, ExecutionException, IOException, JDOMException {
+		String url = sharepointSiteEndpoint + "/_api/Web/GetFolderByServerRelativeUrl(%27" + UrlEscapers.urlFragmentEscaper().escape(folder) + "%27)?$expand=Folders,Files";
+		
+		ContentResponse response = httpClient.newRequest(url).method(HttpMethod.GET).header("X-RequestDigest", authResult.getFormDigest()).send();
+		LOG.debug("statusCode={}", response.getStatus());
+		Verify.verify(response.getStatus() == HttpStatus.OK_200, "response status not ok, statusCode={}", response.getStatus());
+		
+		String content = response.getContentAsString();
+		LOG.debug("content={}", response.getStatus());
+		Verify.verify(Strings.emptyToNull(content) != null, "response content does not contain data");
+		
+		return parse(content);
+	}
+	
+	public SpFolder parse(String xml) throws JDOMException, IOException {
 		SAXBuilder builder = new SAXBuilder();
-		LOG.debug("## 5-listSubfolders");
-		String url5 = sharepointSiteEndpoint + "/_api/Web/GetFolderByServerRelativeUrl(%27" + UrlEscapers.urlFragmentEscaper().escape(folder) + "%27)";
-		ContentResponse response5 = httpClient.newRequest(url5).method(HttpMethod.GET).header("X-RequestDigest", authResult.getFormDigest()).send();
-		LOG.debug("statusCode={}", response5.getStatus());
-		String content5 = response5.getContentAsString();
-		Verify.verify(Strings.emptyToNull(content5) != null, "response content does not contain data");
-		Document doc5 = builder.build(new StringReader(content5));
+		Document doc = builder.build(new StringReader(xml));
 
+		Namespace a = Namespace.getNamespace("a", "http://www.w3.org/2005/Atom");
 		Namespace d = Namespace.getNamespace("d", "http://schemas.microsoft.com/ado/2007/08/dataservices");
 		Namespace m = Namespace.getNamespace("m", "http://schemas.microsoft.com/ado/2007/08/dataservices/metadata");
-		XPathExpression<Element> expr5 = xFactory.compile("//m:properties", Filters.element(), null, m);
-		List<Element> links5 = expr5.evaluate(doc5);
-		LOG.debug("//m:properties=" + links5.size());
-		List<Folder> results = Lists.newArrayList();
-		for (Element properties : links5) {
-			results.add(
-					new Folder(
-							properties.getChildText("Name", d), 
-							properties.getChildText("ServerRelativeUrl", d), 
-							properties.getChildText("TimeLastModified", d), 
-							properties.getChildText("TimeCreated", d), 
-							properties.getChildText("ItemCount", d)
-					)
+		
+		List<SpObject> children = Lists.newArrayList();
+		XPathExpression<Element> filesExpr = XPathFactory.instance().compile("//a:feed/a:entry[a:category[@term='SP.File']]/a:content/m:properties", Filters.element(), null, a,d,m);
+		List<Element> filesElements = filesExpr.evaluate(doc);
+		for (Element properties : filesElements) {
+			children.add(
+				new SpFile(
+					properties.getChildText("Name", d), 
+					properties.getChildText("ServerRelativeUrl", d), 
+					properties.getChildText("TimeLastModified", d), 
+					properties.getChildText("TimeCreated", d), 
+					properties.getChildText("Length", d)
+				)
 			);
-		}
-		Verify.verify(results.size() == 1, "This is strange, should be exactly one properties element about");
-		return results.get(0);
+		}		
+		
+		XPathExpression<Element> foldersExpr = XPathFactory.instance().compile("//a:feed/a:entry[a:category[@term='SP.Folder']]/a:content/m:properties", Filters.element(), null, a,d,m);
+		List<Element> folderElements = foldersExpr.evaluate(doc);
+		for (Element properties : folderElements) {
+			children.add(
+				new SpFolder(
+					properties.getChildText("Name", d), 
+					properties.getChildText("ServerRelativeUrl", d), 
+					properties.getChildText("TimeLastModified", d), 
+					properties.getChildText("TimeCreated", d), 
+					properties.getChildText("ItemCount", d),
+					Lists.newArrayList()
+				)
+			);
+		}	
+		
+		XPathExpression<Element> expr5 = XPathFactory.instance().compile("/a:entry/a:content/m:properties", Filters.element(), null, a,d,m);
+		List<Element> links5 = expr5.evaluate(doc);
+		Verify.verify(links5.size() == 1, "This is strange, should be exactly one properties element about");
+		return new SpFolder(
+			links5.get(0).getChildText("Name", d), 
+			links5.get(0).getChildText("ServerRelativeUrl", d), 
+			links5.get(0).getChildText("TimeLastModified", d), 
+			links5.get(0).getChildText("TimeCreated", d), 
+			links5.get(0).getChildText("ItemCount", d),
+			children
+		);
 	}
 }

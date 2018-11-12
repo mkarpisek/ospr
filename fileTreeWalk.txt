@@ -1,0 +1,17 @@
+/sites/test1site/Shared Documents
+/sites/test1site/Shared Documents/test1.txt
+/sites/test1site/Shared Documents/test2.txt
+/sites/test1site/Shared Documents/test3.txt
+/sites/test1site/Shared Documents/folder1
+/sites/test1site/Shared Documents/folder1/test11.txt
+/sites/test1site/Shared Documents/folder1/folder11
+/sites/test1site/Shared Documents/Forms
+/sites/test1site/Shared Documents/Forms/repair.aspx
+/sites/test1site/Shared Documents/Forms/Thumbnails.aspx
+/sites/test1site/Shared Documents/Forms/template.dotx
+/sites/test1site/Shared Documents/Forms/Upload.aspx
+/sites/test1site/Shared Documents/Forms/Combine.aspx
+/sites/test1site/Shared Documents/Forms/EditForm.aspx
+/sites/test1site/Shared Documents/Forms/DispForm.aspx
+/sites/test1site/Shared Documents/Forms/AllItems.aspx
+/sites/test1site/Shared Documents/Forms/Document
