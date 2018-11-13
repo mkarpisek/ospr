@@ -12,7 +12,7 @@ package net.karpisek.ospr.net;
 
 import java.io.IOException;
 
-public interface SpFileVisitor {
+public interface ISpFileVisitor {
 
 	void preVisitFolder(SpFolder folder) throws IOException;
 

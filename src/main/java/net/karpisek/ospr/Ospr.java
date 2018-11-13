@@ -29,10 +29,11 @@ import com.google.common.base.Charsets;
 import com.google.common.base.Stopwatch;
 import com.google.common.io.CharStreams;
 
+import net.karpisek.ospr.net.HttpSpObjectProvider;
 import net.karpisek.ospr.net.SharepointOnlineAuthentication;
 import net.karpisek.ospr.net.SharepointOnlineAuthentication.Result;
 import net.karpisek.ospr.net.SpFile;
-import net.karpisek.ospr.net.SpFileVisitor;
+import net.karpisek.ospr.net.ISpFileVisitor;
 import net.karpisek.ospr.net.SpFiles;
 import net.karpisek.ospr.net.SpFolder;
 
@@ -87,7 +88,7 @@ public class Ospr {
 			
 			Path fileTreeWalkFile = Paths.get("fileTreeWalk.txt");
 			try(BufferedWriter writer = Files.newBufferedWriter(fileTreeWalkFile)){
-				SpFiles.walkFileTree(httpClient, authResult, sharepointSiteEndpoint, rootFolder, new SpFileVisitor() {
+				SpFiles.walkFileTree(new HttpSpObjectProvider(httpClient, authResult, sharepointSiteEndpoint), rootFolder, new ISpFileVisitor() {
 					@Override
 					public void preVisitFolder(SpFolder folder) throws IOException {
 						LOG.debug("preVisitDirectory={}", folder);

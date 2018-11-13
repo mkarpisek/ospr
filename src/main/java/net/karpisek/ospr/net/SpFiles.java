@@ -14,41 +14,32 @@ import java.io.IOException;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.TimeoutException;
 
-import org.eclipse.jetty.client.HttpClient;
 import org.jdom2.JDOMException;
 
 public class SpFiles {
 	public static void walkFileTree(
-			HttpClient httpClient, 
-			SharepointOnlineAuthentication.Result authResult, 
-			String sharepointSiteEndpoint, 
+			ISpObjectProvider objectProvider, 
 			String folderName,
-			SpFileVisitor visitor
+			ISpFileVisitor visitor
 			) throws InterruptedException, TimeoutException, ExecutionException, IOException, JDOMException {
-		SpFolder folder = new GetFolder(authResult, sharepointSiteEndpoint, folderName).execute(httpClient);
+		SpFolder folder = objectProvider.getFolder(folderName);
 		walk(
-				httpClient, 
-				authResult, 
-				sharepointSiteEndpoint, 
+				objectProvider, 
 				folder,
 				visitor
 				); 	
 	}
 	
 	private static void walk(
-			HttpClient httpClient, 
-			SharepointOnlineAuthentication.Result authResult, 
-			String sharepointSiteEndpoint, 
+			ISpObjectProvider objectProvider, 
 			SpFolder folder,
-			SpFileVisitor visitor
+			ISpFileVisitor visitor
 			) throws InterruptedException, TimeoutException, ExecutionException, IOException, JDOMException {
 		visitor.preVisitFolder(folder);
 		for (SpObject child : folder.getChildren()) {
 			if(child.isFolder()){
 				walkFileTree(
-						httpClient, 
-						authResult, 
-						sharepointSiteEndpoint, 
+						objectProvider,
 						child.getServerRelativeUrl(),
 						visitor
 						); 				
