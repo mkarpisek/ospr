@@ -10,11 +10,14 @@
  *******************************************************************************/
 package net.karpisek.ospr.net;
 
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Collectors;
 
 import com.google.common.base.Joiner;
 import com.google.common.base.MoreObjects;
+import com.google.common.collect.Lists;
 
 public class SpFolder extends SpObject{
 	private List<? extends SpObject> children;
@@ -22,7 +25,13 @@ public class SpFolder extends SpObject{
 	public SpFolder(String name, String serverRelativeUrl, String timeLastModified, String timeCreated, String itemCount, List<? extends SpObject> children) {
 		super(name, serverRelativeUrl, timeLastModified, timeCreated);
 		this.itemCount = itemCount;
-		this.children = children;
+		this.children = Lists.newArrayList(children);
+		Collections.sort(this.children, new Comparator<SpObject>() {
+			@Override
+			public int compare(SpObject o1, SpObject o2) {
+				return o1.getName().compareTo(o2.getName());
+			}
+		});
 	}
 	final String itemCount;
 	

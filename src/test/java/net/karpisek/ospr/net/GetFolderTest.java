@@ -39,11 +39,11 @@ public class GetFolderTest {
 		assertEquals("2018-10-27T08:08:40Z", folder.getTimeCreated());
 		assertEquals("4", folder.getItemCount());
 		
-		ArrayList<String> expectedChildrenNames = Lists.newArrayList("test1.txt", "test2.txt", "test3.txt", "folder1", "Forms");
+		ArrayList<String> expectedChildrenNames = Lists.newArrayList("Forms", "folder1" , "test1.txt", "test2.txt", "test3.txt");
 		List<String> actualChildrenNames = folder.getChildren().stream().map(each -> each.getName()).collect(Collectors.toList());
 		assertEquals(expectedChildrenNames, actualChildrenNames);
 		
 		assertEquals(Lists.newArrayList("test1.txt", "test2.txt", "test3.txt"), folder.getChildren().stream().filter(each -> each.isFile()).map(each -> each.getName()).collect(Collectors.toList()));
-		assertEquals(Lists.newArrayList("folder1", "Forms"), folder.getChildren().stream().filter(each -> each.isFolder()).map(each -> each.getName()).collect(Collectors.toList()));
+		assertEquals(Lists.newArrayList("Forms", "folder1"), folder.getChildren().stream().filter(each -> each.isFolder()).map(each -> each.getName()).collect(Collectors.toList()));
 	}	
 }

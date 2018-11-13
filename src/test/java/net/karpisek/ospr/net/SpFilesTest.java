@@ -13,19 +13,16 @@ package net.karpisek.ospr.net;
 import static org.junit.Assert.assertEquals;
 
 import java.io.IOException;
-import java.io.PrintWriter;
-import java.io.StringWriter;
-import java.nio.file.FileVisitResult;
-import java.nio.file.FileVisitor;
-import java.nio.file.Files;
 import java.nio.file.Path;
-import java.nio.file.Paths;
-import java.nio.file.attribute.BasicFileAttributes;
+import java.util.List;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.TimeoutException;
 
 import org.jdom2.JDOMException;
 import org.junit.Test;
+
+import com.google.common.base.Joiner;
+import com.google.common.collect.Lists;
 
 public class SpFilesTest {
 	static String toUnixString(Path path) {
@@ -35,31 +32,34 @@ public class SpFilesTest {
 	
 	@Test
 	public void test1() throws IOException, JDOMException, InterruptedException, TimeoutException, ExecutionException {
-		StringWriter expected = new StringWriter();
-		PrintWriter expectedPrintWriter = new PrintWriter(expected);
-		expectedPrintWriter.println("preVisitFolder=src/test/resources/test1site/documents");
-		expectedPrintWriter.println("preVisitFolder=src/test/resources/test1site/documents/test11");
-		expectedPrintWriter.println("preVisitFolder=src/test/resources/test1site/documents/test11/test111");
-		expectedPrintWriter.println("visitFile=src/test/resources/test1site/documents/test11/test11a.txt");
-		expectedPrintWriter.println("preVisitFolder=src/test/resources/test1site/documents/test12");
-		expectedPrintWriter.println("visitFile=src/test/resources/test1site/documents/test1a.txt");
-		expectedPrintWriter.println("visitFile=src/test/resources/test1site/documents/test1b.txt");
-		expectedPrintWriter.println("visitFile=src/test/resources/test1site/documents/test1c.docx");
-		expectedPrintWriter.println("visitFile=src/test/resources/test1site/documents/test1d.xlsx");
-		expectedPrintWriter.println("visitFile=src/test/resources/test1site/documents/test1e.pptx");
+		List<String> expected = Lists.newArrayList();
+		expected.add("preVisitFolder=documents");
+		expected.add("visitFile=test.docx");
+		expected.add("visitFile=test.pptx");
+		expected.add("visitFile=test.txt");
+		expected.add("visitFile=test.xlsx");
+		expected.add("preVisitFolder=test1");
+		expected.add("preVisitFolder=test11");
+		expected.add("visitFile=test11a.txt");
+		expected.add("visitFile=test1a.txt");
+		expected.add("visitFile=test1b.txt");
+		expected.add("visitFile=test1c.docx");
+		expected.add("visitFile=test1d.xlsx");
+		expected.add("visitFile=test1e.pptx");
+		expected.add("preVisitFolder=test2");
+		expected.add("visitFile=test2a.txt");
 		
-		StringWriter actual = new StringWriter();
-		PrintWriter actualPrintWriter = new PrintWriter(actual);
+		List<String> actual = Lists.newArrayList();
 		SpFiles.walkFileTree(new LocalSpObjectProvider(), "src/test/resources/test1site/documents", new ISpFileVisitor() {
 			
 			@Override
 			public void visitFile(SpFile file) throws IOException {
-				actualPrintWriter.println("visitFile="+file.getServerRelativeUrl());
+				actual.add("visitFile="+file.getName());
 			}
 			
 			@Override
 			public void preVisitFolder(SpFolder folder) throws IOException {
-				actualPrintWriter.println("preVisitFolder="+folder.getServerRelativeUrl());
+				actual.add("preVisitFolder="+folder.getName());
 			}
 			
 			@Override
@@ -67,52 +67,7 @@ public class SpFilesTest {
 				
 			}
 		});
-		assertEquals(expected.toString(), actual.toString());
+		assertEquals(Joiner.on("\n").join(expected), Joiner.on("\n").join(actual));
 	}	
 	
-	@Test
-	public void testFiles() throws IOException, JDOMException {
-		StringWriter expected = new StringWriter();
-		PrintWriter expectedPrintWriter = new PrintWriter(expected);
-		expectedPrintWriter.println("preVisitDirectory=src/test/resources/test1site");
-		expectedPrintWriter.println("preVisitDirectory=src/test/resources/test1site/documents");
-		expectedPrintWriter.println("preVisitDirectory=src/test/resources/test1site/documents/test11");
-		expectedPrintWriter.println("preVisitDirectory=src/test/resources/test1site/documents/test11/test111");
-		expectedPrintWriter.println("visitFile=src/test/resources/test1site/documents/test11/test11a.txt");
-		expectedPrintWriter.println("preVisitDirectory=src/test/resources/test1site/documents/test12");
-		expectedPrintWriter.println("visitFile=src/test/resources/test1site/documents/test1a.txt");
-		expectedPrintWriter.println("visitFile=src/test/resources/test1site/documents/test1b.txt");
-		expectedPrintWriter.println("visitFile=src/test/resources/test1site/documents/test1c.docx");
-		expectedPrintWriter.println("visitFile=src/test/resources/test1site/documents/test1d.xlsx");
-		expectedPrintWriter.println("visitFile=src/test/resources/test1site/documents/test1e.pptx");
-
-		StringWriter actual = new StringWriter();
-		PrintWriter actualPrintWriter = new PrintWriter(actual);
-		Files.walkFileTree(Paths.get("src/test/resources/test1site"), new FileVisitor<Path>() {
-
-			@Override
-			public FileVisitResult preVisitDirectory(Path dir, BasicFileAttributes attrs) throws IOException {
-				actualPrintWriter.println("preVisitDirectory="+toUnixString(dir));
-				return FileVisitResult.CONTINUE;
-			}
-
-			@Override
-			public FileVisitResult visitFile(Path file, BasicFileAttributes attrs) throws IOException {
-				actualPrintWriter.println("visitFile="+toUnixString(file));
-				return FileVisitResult.CONTINUE;
-			}
-
-			@Override
-			public FileVisitResult visitFileFailed(Path file, IOException exc) throws IOException {
-				return FileVisitResult.CONTINUE;
-			}
-
-			@Override
-			public FileVisitResult postVisitDirectory(Path dir, IOException exc) throws IOException {
-				return FileVisitResult.CONTINUE;
-			}
-		});
-		
-		assertEquals(expected.toString(), actual.toString());
-	}	
 }
