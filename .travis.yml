@@ -13,3 +13,6 @@ addons:
         
 install: true
 script: mvn clean package sonar:sonar
+
+after_success:
+    - bash <(curl -s https://codecov.io/bash)
