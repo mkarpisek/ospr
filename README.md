@@ -21,13 +21,16 @@ mvn clean package
 
 ### Run
 ```
-Usage: java -jar ospr.jar [-hV] --site=site --url=url -p=password -u=username
+Usage: java -jar ospr.jar [-hV] -p=PASSWORD -u=USERNAME URL
 Office 365 Sharepoint File Reporting Tool
-      --site=site           on sharepoint for which to generate report
-      --url=url             in format https://<yourdomain>.sharepoint.com
+      URL                   sharepoint site/library/folder/subfolder url, in format
+                              'https://yourdomain.sharepoint.
+                              com/sites/siteName/libraryName/folderName', if URL is
+                              for site only uses 'Shared Documents' as default
+                              libraryName
   -h, --help                Show this help message and exit.
-  -p, --password=password   for sharepoint account to use
-  -u, --user=username       sharepoint account username in format
+  -p, --password=PASSWORD   for sharepoint account to use
+  -u, --user=USERNAME       sharepoint account username in format
                               <userName>@<yourdomain>.onmicrosoft.com
   -V, --version             Print version information and exit.
 ```

@@ -51,14 +51,14 @@ import net.karpisek.ospr.Ospr;
  */
 public class SharepointOnlineAuthentication {
 	public static class Builder{
-		private String sharepoint;
+		private SpUri spUri;
 		private String browserUserAgent;
 		private String stsEndpoint;
 		private String username;
 		private String password;
 		
-		public Builder(String sharepoint) {
-			this.sharepoint = sharepoint;
+		public Builder(SpUri spUri) {
+			this.spUri = spUri;
 		}
 		
 		public Builder browserUserAgent(String value) {
@@ -82,27 +82,27 @@ public class SharepointOnlineAuthentication {
 		}
 		
 		public SharepointOnlineAuthentication build() {
-			return new SharepointOnlineAuthentication(sharepoint, browserUserAgent, stsEndpoint, username, password);
+			return new SharepointOnlineAuthentication(spUri, browserUserAgent, stsEndpoint, username, password);
 		}
 	}
 	
 	public static class Result{
-		public Result(String sharepoint, String rtFa, String fedAuth, String binarySecurityToken, String formDigest) {
-			this.sharepoint = sharepoint;
+		public Result(SpUri spUri, String rtFa, String fedAuth, String binarySecurityToken, String formDigest) {
+			this.spUri = spUri;
 			this.rtFa = rtFa;
 			this.fedAuth = fedAuth;
 			this.binarySecurityToken = binarySecurityToken;
 			this.formDigest = formDigest;
 		}
 		
-		final String sharepoint;
+		final SpUri spUri;
 		final String rtFa;
 		final String fedAuth;
 		final String binarySecurityToken;
 		final String formDigest;
 		
-		public String getSharepoint() {
-			return sharepoint;
+		public SpUri getSharepointUri() {
+			return spUri;
 		}
 
 		public String getRtFa() {
@@ -123,19 +123,19 @@ public class SharepointOnlineAuthentication {
 
 		@Override
 		public String toString() {
-			return MoreObjects.toStringHelper(this).add("sharepoint", sharepoint).add("rtFa", rtFa).add("fedAuth", fedAuth).add("binarySecurityToken", binarySecurityToken).add("formDigest", formDigest).toString();
+			return MoreObjects.toStringHelper(this).add("url", spUri).add("rtFa", rtFa).add("fedAuth", fedAuth).add("binarySecurityToken", binarySecurityToken).add("formDigest", formDigest).toString();
 		}
 	}
 	
 	private static final Logger LOG = LoggerFactory.getLogger(SharepointOnlineAuthentication.class);
-	private String sharepoint;
+	private SpUri uri;
 	private String browserUserAgent;
 	private String stsEndpoint;
 	private String username;
 	private String password;
 	
-	private SharepointOnlineAuthentication(String sharepoint, String browserUserAgent, String stsEndpoint, String username, String password) {
-		this.sharepoint = sharepoint;
+	private SharepointOnlineAuthentication(SpUri uri, String browserUserAgent, String stsEndpoint, String username, String password) {
+		this.uri = uri;
 		this.browserUserAgent = browserUserAgent;
 		this.stsEndpoint = stsEndpoint;
 		this.username = username;
@@ -144,8 +144,10 @@ public class SharepointOnlineAuthentication {
 	
 	public Result execute(HttpClient httpClient) throws InterruptedException, TimeoutException, ExecutionException, IOException, JDOMException {
 		LOG.debug("## 1-rpsContextCookie");
+		String uri1 = uri.getServerUri() + "/_layouts/15/Authenticate.aspx?Source=" + UrlEscapers.urlFragmentEscaper().escape(uri.getServerUri().toString());
+		LOG.debug("uri1={}", uri1);
 		ContentResponse response1 = httpClient
-				.newRequest(sharepoint + "/_layouts/15/Authenticate.aspx?Source=" + UrlEscapers.urlFragmentEscaper().escape("sharepoint"))
+				.newRequest(uri1)
 				.method(HttpMethod.GET)
 				.agent(browserUserAgent)
 				.send();
@@ -159,7 +161,7 @@ public class SharepointOnlineAuthentication {
 		String requestContent = template
 				.replace("${USERNAME}", username)
 				.replace("${PASSWORD}", password)
-				.replace("${ENDPOINT}", sharepoint);
+				.replace("${ENDPOINT}", uri.getSiteUri().toString());
 		ContentResponse response2 = httpClient
 				.newRequest(stsEndpoint)
 				.method(HttpMethod.POST)
@@ -188,7 +190,9 @@ public class SharepointOnlineAuthentication {
 
 		//
 		LOG.debug("## 3-getAccessToken");
-		ContentResponse response3 = httpClient.newRequest(sharepoint + "/_forms/default.aspx?wa=wsignin1.0")
+		String uri3 = uri.getServerUri() + "/_forms/default.aspx?wa=wsignin1.0";
+		LOG.debug("uri3={}", uri3);
+		ContentResponse response3 = httpClient.newRequest(uri3)
 				.method(HttpMethod.POST)
 				.agent(browserUserAgent)
 				.content(new StringContentProvider(binarySecurityToken))
@@ -204,7 +208,9 @@ public class SharepointOnlineAuthentication {
 		Verify.verify(fedAuth != null, "fedAuth not found");
 
 		LOG.debug("## 4-getRequestDigest");
-		ContentResponse response4 = httpClient.newRequest(sharepoint + "/_api/contextinfo")
+		String uri4 = uri.getServerUri() + "/_api/contextinfo";
+		LOG.debug("uri4={}", uri4);
+		ContentResponse response4 = httpClient.newRequest(uri4)
 				.method(HttpMethod.POST)
 				.agent(browserUserAgent)
 				.content(new StringContentProvider(binarySecurityToken))
@@ -224,6 +230,6 @@ public class SharepointOnlineAuthentication {
 		Verify.verify(!formDigest.isEmpty(), "formDigest should not be empty");
 		LOG.debug("formDigest=" + formDigest);
 		
-		return new Result(sharepoint, rtFa.getValue(), fedAuth.getValue(), binarySecurityToken, formDigest);
+		return new Result(uri, rtFa.getValue(), fedAuth.getValue(), binarySecurityToken, formDigest);
 	}
 }

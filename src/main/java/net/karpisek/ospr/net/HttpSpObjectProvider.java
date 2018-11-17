@@ -11,6 +11,7 @@
 package net.karpisek.ospr.net;
 
 import java.io.IOException;
+import java.net.URI;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.TimeoutException;
 
@@ -25,21 +26,21 @@ import net.karpisek.ospr.net.SharepointOnlineAuthentication.Result;
 public class HttpSpObjectProvider implements ISpObjectProvider {
 	private HttpClient httpClient;
 	private Result authResult;
-	private String sharepointSiteEndpoint;
+	private URI uri;
 
 	public HttpSpObjectProvider(
 		HttpClient httpClient, 
 		SharepointOnlineAuthentication.Result authResult, 
-		String sharepointSiteEndpoint
+		URI uri
 	) {
 		this.httpClient = httpClient;
 		this.authResult = authResult;
-		this.sharepointSiteEndpoint = sharepointSiteEndpoint;
+		this.uri = uri;
 	}
 
 	@Override
 	public SpFolder getFolder(String folder) throws InterruptedException, TimeoutException, ExecutionException, IOException, JDOMException {
-		return new GetFolder(authResult, sharepointSiteEndpoint, folder).execute(httpClient);
+		return new GetFolder(authResult, uri, folder).execute(httpClient);
 	}
 
 }

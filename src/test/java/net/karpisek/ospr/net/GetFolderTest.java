@@ -14,6 +14,7 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 
 import java.io.IOException;
+import java.net.URI;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -31,7 +32,7 @@ public class GetFolderTest {
 		String xml = Ospr.readResource("getFolderResponse.xml");
 		assertNotNull("Failed to load test resource", xml);
 		
-		SpFolder folder = new GetFolder(null, "", "").parse(xml);
+		SpFolder folder = new GetFolder(null, URI.create("https//localhost/sites/test1site"), "").parse(xml);
 		
 		assertEquals("Shared Documents", folder.getName());
 		assertEquals("/sites/test1site/Shared Documents", folder.getServerRelativeUrl());

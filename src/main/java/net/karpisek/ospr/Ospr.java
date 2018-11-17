@@ -19,6 +19,7 @@ import java.net.HttpCookie;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.List;
 import java.util.concurrent.Callable;
 import java.util.concurrent.TimeUnit;
 
@@ -37,9 +38,15 @@ import net.karpisek.ospr.net.SharepointOnlineAuthentication.Result;
 import net.karpisek.ospr.net.SpFile;
 import net.karpisek.ospr.net.SpFiles;
 import net.karpisek.ospr.net.SpFolder;
+import net.karpisek.ospr.net.SpUri;
 import picocli.CommandLine;
 import picocli.CommandLine.Command;
+import picocli.CommandLine.DefaultExceptionHandler;
+import picocli.CommandLine.Help;
+import picocli.CommandLine.ITypeConverter;
 import picocli.CommandLine.Option;
+import picocli.CommandLine.Parameters;
+import picocli.CommandLine.RunLast;
 
 // Office 365 Enterprise E3 Trial can be registered here:
 //	https://sharepoint.stackexchange.com/questions/129573/create-a-free-sharepoint-online-site-office-365
@@ -49,9 +56,16 @@ import picocli.CommandLine.Option;
 @Command(name = "java -jar ospr.jar", mixinStandardHelpOptions = true, description="Office 365 Sharepoint File Reporting Tool")
 public class Ospr implements Callable<Integer>{
 	private static final Logger LOG = LoggerFactory.getLogger(Ospr.class);
-
+	
 	public static void main(String[] args) throws Exception {
-		CommandLine.call(new Ospr(), args);
+//		CommandLine.call(new Ospr(), args);
+        CommandLine cmd = new CommandLine(new Ospr());
+        cmd.registerConverter(SpUri.class, new SpUriConverter());
+        cmd.parseWithHandlers(
+    		new RunLast().useOut(System.out).useAnsi(Help.Ansi.AUTO), 
+    		new DefaultExceptionHandler<List<Object>>().useErr(System.err).useAnsi(Help.Ansi.AUTO), 
+    		args
+        );
 	}
 
 	public static String readResource(String name) throws IOException {
@@ -68,33 +82,28 @@ public class Ospr implements Callable<Integer>{
 		}
 		return null;
 	}
+	
+	private static class SpUriConverter implements ITypeConverter<SpUri> {
+	    @Override
+		public SpUri convert(String value) throws Exception {
+	    	return SpUri.fromString(value);	
+	    }
+	}
 
-	@Option(names = { "-u", "--user" }, required=true, paramLabel="username", description = "sharepoint account username in format <userName>@<yourdomain>.onmicrosoft.com")
+	@Option(names = { "-u", "--user" }, required=true, paramLabel="USERNAME", description = "sharepoint account username in format <userName>@<yourdomain>.onmicrosoft.com")
 	private String username;	
-	@Option(names = { "-p", "--password" }, required=true, paramLabel="password", description = "for sharepoint account to use")
+	@Option(names = { "-p", "--password" }, required=true, paramLabel="PASSWORD", description = "for sharepoint account to use")
 	private String password;								
-	@Option(names = {"--url" }, required=true, paramLabel="url", description = "in format https://<yourdomain>.sharepoint.com")
-	private String sharepoint;
-	@Option(names = {"--site" }, required=true, paramLabel="site", description = "on sharepoint for which to generate report")
-	private String sharepointSite;
+	@Parameters(arity="1", paramLabel="URL", description = "sharepoint site/library/folder/subfolder url, in format 'https://yourdomain.sharepoint.com/sites/siteName/libraryName/folderName', if URL is for site only uses 'Shared Documents' as default libraryName")
+	private SpUri sharepointUri;
 
 
 	@Override
 	public Integer call() throws Exception {
-//		if(args.length != 4) {
-//			LOG.info("Usage: java -jar ospr.jar  <sharepointUrl> <username> <password> <site>");
-//			LOG.info("  <sharepointUrl> in format https://<yourdomain>.sharepoint.com");
-//			LOG.info("  <userName> in format: <userName>@<yourdomain>.onmicrosoft.com");
-//			LOG.info("  <password> for <username>");
-//			LOG.info("  <site> is name of site on <yourdomain>.sharepoint.com for which we want to get file report");
-//			return;
-//		}
 		LOG.info("Start");
 		Stopwatch stopwatch = Stopwatch.createStarted();
-		String sharepointSiteEndpoint = sharepoint + "/sites/" + sharepointSite;
 		String stsEndpoint = "https://login.microsoftonline.com/extSTS.srf";
 		String browserUserAgent = "Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:17.0) Gecko/20100101 Firefox/17.0";
-		String rootFolder = "Shared Documents";
 
 		// Instantiate HttpClient
 		HttpClient httpClient = new HttpClient();
@@ -106,7 +115,7 @@ public class Ospr implements Callable<Integer>{
 		try {
 			httpClient.start();
 
-			SharepointOnlineAuthentication auth = new SharepointOnlineAuthentication.Builder(sharepoint)
+			SharepointOnlineAuthentication auth = new SharepointOnlineAuthentication.Builder(sharepointUri)
 				.browserUserAgent(browserUserAgent)
 				.stsEndpoint(stsEndpoint)
 				.username(username)
@@ -119,7 +128,7 @@ public class Ospr implements Callable<Integer>{
 			
 			Path fileTreeWalkFile = Paths.get("fileTreeWalk.txt");
 			try(BufferedWriter writer = Files.newBufferedWriter(fileTreeWalkFile)){
-				SpFiles.walkFileTree(new HttpSpObjectProvider(httpClient, authResult, sharepointSiteEndpoint), rootFolder, new ISpFileVisitor() {
+				SpFiles.walkFileTree(new HttpSpObjectProvider(httpClient, authResult, sharepointUri.getSiteUri()), sharepointUri.getPath(), new ISpFileVisitor() {
 					@Override
 					public void preVisitFolder(SpFolder folder) throws IOException {
 						LOG.debug("preVisitDirectory={}", folder);

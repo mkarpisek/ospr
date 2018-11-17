@@ -12,6 +12,7 @@ package net.karpisek.ospr.net;
 
 import java.io.IOException;
 import java.io.StringReader;
+import java.net.URI;
 import java.util.List;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.TimeoutException;
@@ -45,17 +46,18 @@ public class GetFolder {
 	private static final Logger LOG = LoggerFactory.getLogger(SharepointOnlineAuthentication.class);
 	
 	private Result authResult;
-	private String sharepointSiteEndpoint;
-	private String folder;
+	private URI siteUri;
+	private String folderServerRelativeUrl;
 
-	public GetFolder(SharepointOnlineAuthentication.Result authResult, String sharepointSiteEndpoint, String folder) {
+	public GetFolder(SharepointOnlineAuthentication.Result authResult, URI siteUri, String folderServerRelativeUrl) {
 		this.authResult = authResult;
-		this.sharepointSiteEndpoint = sharepointSiteEndpoint;
-		this.folder = folder;
+		this.siteUri = siteUri;
+		this.folderServerRelativeUrl = folderServerRelativeUrl;
 	}
 	
+	//TODO: would want to have better reaction for invalid (not found) folders 
 	public SpFolder execute(HttpClient httpClient) throws InterruptedException, TimeoutException, ExecutionException, IOException, JDOMException {
-		String url = sharepointSiteEndpoint + "/_api/Web/GetFolderByServerRelativeUrl(%27" + UrlEscapers.urlFragmentEscaper().escape(folder) + "%27)?$expand=Folders,Files";
+		String url = siteUri + "/_api/Web/GetFolderByServerRelativeUrl(%27" + UrlEscapers.urlFragmentEscaper().escape(folderServerRelativeUrl) + "%27)?$expand=Folders,Files";
 		
 		ContentResponse response = httpClient.newRequest(url).method(HttpMethod.GET).header("X-RequestDigest", authResult.getFormDigest()).send();
 		LOG.debug("statusCode={}", response.getStatus());
