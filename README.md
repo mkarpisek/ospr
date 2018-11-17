@@ -1,6 +1,7 @@
 # ospr
 
 [![Build Status](https://travis-ci.org/mkarpisek/orb.svg?branch=master)](https://travis-ci.org/mkarpisek/ospr)
+[![codecov](https://codecov.io/gh/mkarpisek/ospr/branch/master/graph/badge.svg)](https://codecov.io/gh/mkarpisek/ospr)
 
 Office 365 Sharepoint File Reporting Tool
 
