@@ -8,16 +8,29 @@
 Office 365 Sharepoint File Reporting Tool
 
 ## Getting Started
-
-Build and package as one big uberjar:
-```
-mvn clean package
-```
-
 ### Prerequisites
 
 Java 8
 
+### Build
+
+Build code and package as one big uberjar:
+```
+mvn clean package
+```
+
+### Run
+```
+Usage: java -jar ospr.jar [-hV] --site=site --url=url -p=password -u=username
+Office 365 Sharepoint File Reporting Tool
+      --site=site           on sharepoint for which to generate report
+      --url=url             in format https://<yourdomain>.sharepoint.com
+  -h, --help                Show this help message and exit.
+  -p, --password=password   for sharepoint account to use
+  -u, --user=username       sharepoint account username in format
+                              <userName>@<yourdomain>.onmicrosoft.com
+  -V, --version             Print version information and exit.
+```
 ## License
 
 This project is licensed under the EPL 2.0 License - see the [LICENSE.md](LICENSE.md) file for details
