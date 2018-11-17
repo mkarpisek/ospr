@@ -28,6 +28,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.google.common.base.Charsets;
+import com.google.common.base.Preconditions;
 import com.google.common.base.Stopwatch;
 import com.google.common.io.CharStreams;
 
@@ -55,10 +56,10 @@ import picocli.CommandLine.RunLast;
 //TODO: support version command parameter - defined and taken from .pom(or manifest.mf) on build time
 @Command(name = "java -jar ospr.jar", mixinStandardHelpOptions = true, description="Office 365 Sharepoint File Reporting Tool")
 public class Ospr implements Callable<Integer>{
+	public static final int UNLIMITED_DEPTH = -1;
 	private static final Logger LOG = LoggerFactory.getLogger(Ospr.class);
 	
 	public static void main(String[] args) throws Exception {
-//		CommandLine.call(new Ospr(), args);
         CommandLine cmd = new CommandLine(new Ospr());
         cmd.registerConverter(SpUri.class, new SpUriConverter());
         cmd.parseWithHandlers(
@@ -83,11 +84,20 @@ public class Ospr implements Callable<Integer>{
 		return null;
 	}
 	
-	private static class SpUriConverter implements ITypeConverter<SpUri> {
+	static class SpUriConverter implements ITypeConverter<SpUri> {
 	    @Override
 		public SpUri convert(String value) throws Exception {
 	    	return SpUri.fromString(value);	
 	    }
+	}
+	
+	static class MaxDepthConverter implements ITypeConverter<Integer> {
+		@Override
+		public Integer convert(String string) throws Exception {
+			int v = Integer.parseInt(string);
+			Preconditions.checkArgument(v >=0 || v == UNLIMITED_DEPTH, "Illegal maximal traversal depth value, must be >= 0 or %s for unlimited (is '%s')", UNLIMITED_DEPTH, v);
+			return v;
+		}
 	}
 
 	@Option(names = { "-u", "--user" }, required=true, paramLabel="USERNAME", description = "sharepoint account username in format <userName>@<yourdomain>.onmicrosoft.com")
@@ -96,7 +106,9 @@ public class Ospr implements Callable<Integer>{
 	private String password;								
 	@Parameters(arity="1", paramLabel="URL", description = "sharepoint site/library/folder/subfolder url, in format 'https://yourdomain.sharepoint.com/sites/siteName/libraryName/folderName', if URL is for site only uses 'Shared Documents' as default libraryName")
 	private SpUri sharepointUri;
-
+	
+	@Option(names = {"--max-depth" }, paramLabel="MAX", converter = MaxDepthConverter.class, description = "how many levels of (sub)folders to traverse, -1 for unlimited")
+	private int maxDepth = UNLIMITED_DEPTH;
 
 	@Override
 	public Integer call() throws Exception {
@@ -126,9 +138,10 @@ public class Ospr implements Callable<Integer>{
 			Result authResult = auth.execute(httpClient);
 			LOG.info("authFinished timeMs={}",  authStopwatch.elapsed(TimeUnit.MILLISECONDS));
 			
+			LOG.info("fileTreeWalk dir={} maxDepth={}",  sharepointUri.getPath(), maxDepth);
 			Path fileTreeWalkFile = Paths.get("fileTreeWalk.txt");
 			try(BufferedWriter writer = Files.newBufferedWriter(fileTreeWalkFile)){
-				SpFiles.walkFileTree(new HttpSpObjectProvider(httpClient, authResult, sharepointUri.getSiteUri()), sharepointUri.getPath(), new ISpFileVisitor() {
+				SpFiles.walkFileTree(new HttpSpObjectProvider(httpClient, authResult, sharepointUri.getSiteUri()), sharepointUri.getPath(), 0, maxDepth, new ISpFileVisitor() {
 					@Override
 					public void preVisitFolder(SpFolder folder) throws IOException {
 						LOG.debug("preVisitDirectory={}", folder);

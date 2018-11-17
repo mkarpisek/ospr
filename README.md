@@ -21,13 +21,15 @@ mvn clean package
 
 ### Run
 ```
-Usage: java -jar ospr.jar [-hV] -p=PASSWORD -u=USERNAME URL
+Usage: java -jar ospr.jar [-hV] [--max-depth=MAX] -p=PASSWORD -u=USERNAME URL
 Office 365 Sharepoint File Reporting Tool
       URL                   sharepoint site/library/folder/subfolder url, in format
                               'https://yourdomain.sharepoint.
                               com/sites/siteName/libraryName/folderName', if URL is
                               for site only uses 'Shared Documents' as default
                               libraryName
+      --max-depth=MAX       how many levels of (sub)folders to traverse, -1 for
+                              unlimited
   -h, --help                Show this help message and exit.
   -p, --password=PASSWORD   for sharepoint account to use
   -u, --user=USERNAME       sharepoint account username in format

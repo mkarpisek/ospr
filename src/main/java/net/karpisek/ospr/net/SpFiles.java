@@ -16,24 +16,30 @@ import java.util.concurrent.TimeoutException;
 
 import org.jdom2.JDOMException;
 
+import net.karpisek.ospr.Ospr;
+
 public class SpFiles {
 	public static void walkFileTree(
 			ISpObjectProvider objectProvider, 
 			String folderName,
-			ISpFileVisitor visitor
+			int depth, 
+			int maxDepth, ISpFileVisitor visitor
 			) throws InterruptedException, TimeoutException, ExecutionException, IOException, JDOMException {
+		if(maxDepth != Ospr.UNLIMITED_DEPTH && depth>maxDepth) {
+			return;
+		}
 		SpFolder folder = objectProvider.getFolder(folderName);
 		walk(
 				objectProvider, 
 				folder,
-				visitor
+				depth, maxDepth, visitor
 				); 	
 	}
 	
 	private static void walk(
 			ISpObjectProvider objectProvider, 
 			SpFolder folder,
-			ISpFileVisitor visitor
+			int depth, int maxDepth, ISpFileVisitor visitor
 			) throws InterruptedException, TimeoutException, ExecutionException, IOException, JDOMException {
 		visitor.preVisitFolder(folder);
 		for (SpObject child : folder.getChildren()) {
@@ -41,7 +47,7 @@ public class SpFiles {
 				walkFileTree(
 						objectProvider,
 						child.getServerRelativeUrl(),
-						visitor
+						depth+1, maxDepth, visitor
 						); 				
 			}
 			else {
