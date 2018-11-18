@@ -15,11 +15,17 @@ import java.io.IOException;
 import java.io.OutputStream;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.time.Instant;
+import java.util.Date;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.TimeoutException;
 import java.util.concurrent.atomic.AtomicInteger;
 
+import org.apache.poi.ss.usermodel.Cell;
+import org.apache.poi.ss.usermodel.CellStyle;
+import org.apache.poi.ss.usermodel.CreationHelper;
 import org.apache.poi.ss.usermodel.Row;
+import org.apache.poi.ss.usermodel.Workbook;
 import org.apache.poi.xssf.usermodel.XSSFSheet;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.jdom2.JDOMException;
@@ -70,12 +76,9 @@ public class SpFileTreeReporter{
 					Row row = sheet.createRow(rowNum.getAndIncrement());
 					row.createCell(colNumber++).setCellValue(file.getName());
 					row.createCell(colNumber++).setCellValue(file.getServerRelativeUrl());
-					//TODO: timeLastModified should have cell configured and set to excel format for datetime
-					row.createCell(colNumber++).setCellValue(file.getTimeLastModified());
-					//TODO: timeCreated should have cell configured and set to excel format for datetime
-					row.createCell(colNumber++).setCellValue(file.getTimeCreated());
+					createTimestampCell(row, colNumber++, file.getTimeLastModified());
+					createTimestampCell(row, colNumber++, file.getTimeCreated());
 					row.createCell(colNumber++).setCellValue(file.getLength());
-					
 				}
 	
 				@Override
@@ -109,5 +112,16 @@ public class SpFileTreeReporter{
 	        }
         }
 		LOG.info("fileTreeWalkDone output={} folders={}", outputPath.toAbsolutePath(), folders.get());
+	}
+	
+	private Cell createTimestampCell(Row row, int colNumber, Instant timestamp) {
+		Workbook wb = row.getSheet().getWorkbook();
+		CellStyle cellStyle = wb.createCellStyle();
+		CreationHelper createHelper = wb.getCreationHelper();
+		cellStyle.setDataFormat(createHelper.createDataFormat().getFormat("dd/mm/yyyy hh:mm"));
+		Cell cell = row.createCell(colNumber);
+		cell.setCellValue(Date.from(timestamp));
+		cell.setCellStyle(cellStyle);
+		return cell;
 	}
 }

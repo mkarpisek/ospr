@@ -10,14 +10,16 @@
  *******************************************************************************/
 package net.karpisek.ospr.net;
 
+import java.time.Instant;
+
 public abstract class SpObject {
 
 	protected final String name;
 	protected final String serverRelativeUrl;
-	protected final String timeLastModified;
-	protected final String timeCreated;
+	protected final Instant timeLastModified;
+	protected final Instant timeCreated;
 
-	public SpObject(String name, String serverRelativeUrl, String timeLastModified, String timeCreated) {
+	public SpObject(String name, String serverRelativeUrl, Instant timeLastModified, Instant timeCreated) {
 		this.name=name;
 		this.serverRelativeUrl=serverRelativeUrl;
 		this.timeLastModified=timeLastModified;
@@ -32,11 +34,11 @@ public abstract class SpObject {
 		return serverRelativeUrl;
 	}
 
-	public String getTimeLastModified() {
+	public Instant getTimeLastModified() {
 		return timeLastModified;
 	}
 
-	public String getTimeCreated() {
+	public Instant getTimeCreated() {
 		return timeCreated;
 	}
 	

@@ -15,6 +15,7 @@ import static org.junit.Assert.assertNotNull;
 
 import java.io.IOException;
 import java.net.URI;
+import java.time.Instant;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -36,8 +37,8 @@ public class GetFolderTest {
 		
 		assertEquals("Shared Documents", folder.getName());
 		assertEquals("/sites/test1site/Shared Documents", folder.getServerRelativeUrl());
-		assertEquals("2018-11-10T16:25:33Z", folder.getTimeLastModified());
-		assertEquals("2018-10-27T08:08:40Z", folder.getTimeCreated());
+		assertEquals(Instant.parse("2018-11-10T16:25:33Z"), folder.getTimeLastModified());
+		assertEquals(Instant.parse("2018-10-27T08:08:40Z"), folder.getTimeCreated());
 		assertEquals("4", folder.getItemCount());
 		
 		ArrayList<String> expectedChildrenNames = Lists.newArrayList("Forms", "folder1" , "test1.txt", "test2.txt", "test3.txt");

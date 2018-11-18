@@ -13,6 +13,8 @@ package net.karpisek.ospr.net;
 import java.io.IOException;
 import java.io.StringReader;
 import java.net.URI;
+import java.time.Instant;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.TimeoutException;
@@ -44,6 +46,14 @@ import net.karpisek.ospr.net.SharepointOnlineAuthentication.Result;
  */
 public class GetFolder {
 	private static final Logger LOG = LoggerFactory.getLogger(SharepointOnlineAuthentication.class);
+	
+	public static Instant getChildInstant(Element element, String cname, Namespace ns) {
+		String text = element.getChildText(cname, ns);
+		if(text == null) {
+			return null;
+		}
+		return Instant.from(DateTimeFormatter.ISO_INSTANT.parse(text));
+	}
 	
 	private Result authResult;
 	private URI siteUri;
@@ -86,8 +96,8 @@ public class GetFolder {
 				new SpFile(
 					properties.getChildText("Name", d), 
 					properties.getChildText("ServerRelativeUrl", d), 
-					properties.getChildText("TimeLastModified", d), 
-					properties.getChildText("TimeCreated", d), 
+					getChildInstant(properties, "TimeLastModified", d), 
+					getChildInstant(properties, "TimeCreated", d),
 					properties.getChildText("Length", d)
 				)
 			);
@@ -100,8 +110,8 @@ public class GetFolder {
 				new SpFolder(
 					properties.getChildText("Name", d), 
 					properties.getChildText("ServerRelativeUrl", d), 
-					properties.getChildText("TimeLastModified", d), 
-					properties.getChildText("TimeCreated", d), 
+					getChildInstant(properties, "TimeLastModified", d),
+					getChildInstant(properties, "TimeCreated", d),
 					properties.getChildText("ItemCount", d),
 					Lists.newArrayList()
 				)
@@ -114,8 +124,8 @@ public class GetFolder {
 		return new SpFolder(
 			links5.get(0).getChildText("Name", d), 
 			links5.get(0).getChildText("ServerRelativeUrl", d), 
-			links5.get(0).getChildText("TimeLastModified", d), 
-			links5.get(0).getChildText("TimeCreated", d), 
+			getChildInstant(links5.get(0), "TimeLastModified", d),
+			getChildInstant(links5.get(0), "TimeCreated", d),
 			links5.get(0).getChildText("ItemCount", d),
 			children
 		);

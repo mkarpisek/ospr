@@ -10,6 +10,7 @@
  *******************************************************************************/
 package net.karpisek.ospr.net;
 
+import java.time.Instant;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
@@ -24,7 +25,8 @@ import com.google.common.collect.Lists;
 public class SpFolder extends SpObject{
 	private List<? extends SpObject> children;
 
-	public SpFolder(String name, String serverRelativeUrl, String timeLastModified, String timeCreated, String itemCount, List<? extends SpObject> children) {
+	//TODO: itemCount should be int
+	public SpFolder(String name, String serverRelativeUrl, Instant timeLastModified, Instant timeCreated, String itemCount, List<? extends SpObject> children) {
 		super(name, serverRelativeUrl, timeLastModified, timeCreated);
 		this.itemCount = itemCount;
 		this.children = Lists.newArrayList(children);
