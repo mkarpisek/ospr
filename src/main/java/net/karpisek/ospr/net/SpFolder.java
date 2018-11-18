@@ -13,7 +13,9 @@ package net.karpisek.ospr.net;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
+import java.util.function.Predicate;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 import com.google.common.base.Joiner;
 import com.google.common.base.MoreObjects;
@@ -42,6 +44,11 @@ public class SpFolder extends SpObject{
 	public List<? extends SpObject> getChildren() {
 		return children;
 	}
+	
+	public Stream<? extends SpObject> getChildren(Predicate<SpObject> predicate) {
+		return children.stream().filter(predicate);
+	}
+	
 	
 	@Override
 	public boolean isFolder() {

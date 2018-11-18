@@ -10,7 +10,6 @@
  *******************************************************************************/
 package net.karpisek.ospr;
 
-import java.io.BufferedWriter;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
@@ -19,6 +18,8 @@ import java.net.HttpCookie;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.concurrent.Callable;
 import java.util.concurrent.TimeUnit;
@@ -33,12 +34,9 @@ import com.google.common.base.Stopwatch;
 import com.google.common.io.CharStreams;
 
 import net.karpisek.ospr.net.HttpSpObjectProvider;
-import net.karpisek.ospr.net.ISpFileVisitor;
 import net.karpisek.ospr.net.SharepointOnlineAuthentication;
 import net.karpisek.ospr.net.SharepointOnlineAuthentication.Result;
-import net.karpisek.ospr.net.SpFile;
-import net.karpisek.ospr.net.SpFiles;
-import net.karpisek.ospr.net.SpFolder;
+import net.karpisek.ospr.report.SpFileTreeReporter;
 import net.karpisek.ospr.net.SpUri;
 import picocli.CommandLine;
 import picocli.CommandLine.Command;
@@ -138,33 +136,12 @@ public class Ospr implements Callable<Integer>{
 			Result authResult = auth.execute(httpClient);
 			LOG.info("authFinished timeMs={}",  authStopwatch.elapsed(TimeUnit.MILLISECONDS));
 			
-			LOG.info("fileTreeWalk dir={} maxDepth={}",  sharepointUri.getPath(), maxDepth);
-			Path fileTreeWalkFile = Paths.get("fileTreeWalk.txt");
-			try(BufferedWriter writer = Files.newBufferedWriter(fileTreeWalkFile)){
-				SpFiles.walkFileTree(new HttpSpObjectProvider(httpClient, authResult, sharepointUri.getSiteUri()), sharepointUri.getPath(), 0, maxDepth, new ISpFileVisitor() {
-					@Override
-					public void preVisitFolder(SpFolder folder) throws IOException {
-						LOG.debug("preVisitDirectory={}", folder);
-						writer.write(folder.getServerRelativeUrl());
-						writer.newLine();
-					}
-	
-					@Override
-					public void visitFile(SpFile file) throws IOException {
-						LOG.debug("visitFile={}", file);
-						writer.write(file.getServerRelativeUrl());
-						writer.newLine();
-					}
-	
-					@Override
-					public void postVisitFolder(SpFolder folder) throws IOException {
-						LOG.debug("postVisitDirectory={}", folder);
-					}
-				});
+			Path outputPath = Paths.get(String.format("target/%s_%s.xlsx", sharepointUri.getSite(),LocalDateTime.now().format(DateTimeFormatter.ISO_DATE)));
+			if(outputPath.getParent() != null && !Files.exists(outputPath.getParent())) {
+				Files.createDirectories(outputPath.getParent());
 			}
-			LOG.info("FileTreeWalkDone output={}", fileTreeWalkFile.toAbsolutePath());
-			 
-
+			new SpFileTreeReporter(new HttpSpObjectProvider(httpClient, authResult, sharepointUri.getSiteUri()), sharepointUri.getPath(), maxDepth, outputPath).execute();
+			
 			LOG.info("End timeMs={}", stopwatch.elapsed(TimeUnit.MILLISECONDS));
 		} finally {
 			httpClient.stop();

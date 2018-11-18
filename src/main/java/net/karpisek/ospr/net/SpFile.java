@@ -13,14 +13,16 @@ package net.karpisek.ospr.net;
 import com.google.common.base.MoreObjects;
 
 public class SpFile extends SpObject{
-	public SpFile(String name, String serverRelativeUrl, String timeLastModified, String timeCreated, String itemCount) {
+	//TODO: length should be int
+	final String length;
+
+	public SpFile(String name, String serverRelativeUrl, String timeLastModified, String timeCreated, String length) {
 		super(name, serverRelativeUrl, timeLastModified, timeCreated);
-		this.itemCount = itemCount;
+		this.length = length;
 	}
-	final String itemCount;
 	
-	public String getItemCount() {
-		return itemCount;
+	public String getLength() {
+		return length;
 	}
 	
 	@Override
@@ -35,7 +37,7 @@ public class SpFile extends SpObject{
 				.add("serverRelativeUrl", serverRelativeUrl)
 				.add("timeLastModified", timeLastModified)
 				.add("timeCreated", timeCreated)
-				.add("itemCount", itemCount)
+				.add("length", length)
 				.toString();
 	}
 }
