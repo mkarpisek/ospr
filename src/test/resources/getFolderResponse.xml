@@ -97,8 +97,8 @@
                             <d:Level m:type="Edm.Byte">1</d:Level>
                             <d:LinkingUri m:null="true" />
                             <d:LinkingUrl></d:LinkingUrl>
-                            <d:MajorVersion m:type="Edm.Int32">1</d:MajorVersion>
-                            <d:MinorVersion m:type="Edm.Int32">0</d:MinorVersion>
+				            <d:MajorVersion m:type="Edm.Int32">4</d:MajorVersion>
+				            <d:MinorVersion m:type="Edm.Int32">1</d:MinorVersion>
                             <d:Name>test2.txt</d:Name>
                             <d:ServerRelativeUrl>/sites/test1site/Shared Documents/test2.txt</d:ServerRelativeUrl>
                             <d:TimeCreated m:type="Edm.DateTime">2018-11-10T15:31:43Z</d:TimeCreated>

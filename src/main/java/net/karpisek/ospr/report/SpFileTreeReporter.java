@@ -65,7 +65,7 @@ public class SpFileTreeReporter{
 	        {
 	        	Row row = sheet.createRow(rowNum.getAndIncrement());
 	        	int colNumber = 0;
-	        	for (String colName : Lists.newArrayList("sp.name", "sp.serverRelativeUrl", "sp.timeLastModified", "sp.timeCreated", "sp.length")) {
+	        	for (String colName : Lists.newArrayList("sp.name", "sp.serverRelativeUrl", "sp.timeLastModified", "sp.timeCreated", "sp.length", "sp.version")) {
 	        		row.createCell(colNumber++).setCellValue(colName);
 				}
 	        }
@@ -79,6 +79,7 @@ public class SpFileTreeReporter{
 					createTimestampCell(row, colNumber++, file.getTimeLastModified());
 					createTimestampCell(row, colNumber++, file.getTimeCreated());
 					row.createCell(colNumber++).setCellValue(file.getLength());
+					row.createCell(colNumber++).setCellValue(file.getVersion().toString());
 				}
 	
 				@Override

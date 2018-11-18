@@ -40,7 +40,7 @@ class LocalSpObjectProvider implements ISpObjectProvider{
 		List<SpFile> files = Files
 				.list(Paths.get(folder))
 				.filter(each -> !Files.isDirectory(each))
-				.map(path -> new SpFile(SpFilesTest.toUnixString(path.getFileName()), SpFilesTest.toUnixString(path), NOW, NOW, 1234567))
+				.map(path -> new SpFile(SpFilesTest.toUnixString(path.getFileName()), SpFilesTest.toUnixString(path), NOW, NOW, 1234567, SpVersion.fromString("1", "0")))
 				.collect(Collectors.toList());
 		
 		List<SpObject> children = Lists.newArrayList();

@@ -100,13 +100,16 @@ public class GetFolder {
 		XPathExpression<Element> filesExpr = XPathFactory.instance().compile("//a:feed/a:entry[a:category[@term='SP.File']]/a:content/m:properties", Filters.element(), null, a,d,m);
 		List<Element> filesElements = filesExpr.evaluate(doc);
 		for (Element properties : filesElements) {
+			SpVersion version = SpVersion.fromString(properties.getChildText("MajorVersion", d), properties.getChildText("MinorVersion", d));
+			
 			children.add(
 				new SpFile(
 					properties.getChildText("Name", d), 
 					properties.getChildText("ServerRelativeUrl", d), 
 					getChildInstant(properties, "TimeLastModified", d), 
 					getChildInstant(properties, "TimeCreated", d),
-					getChildInt(properties, "Length", d)
+					getChildInt(properties, "Length", d),
+					version
 				)
 			);
 		}		

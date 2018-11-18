@@ -23,6 +23,7 @@ import java.util.stream.Collectors;
 import org.jdom2.JDOMException;
 import org.junit.Test;
 
+import com.google.common.base.Joiner;
 import com.google.common.collect.Lists;
 
 import net.karpisek.ospr.Ospr;
@@ -47,5 +48,7 @@ public class GetFolderTest {
 		
 		assertEquals(Lists.newArrayList("test1.txt", "test2.txt", "test3.txt"), folder.getChildren().stream().filter(each -> each.isFile()).map(each -> each.getName()).collect(Collectors.toList()));
 		assertEquals(Lists.newArrayList("Forms", "folder1"), folder.getChildren().stream().filter(each -> each.isFolder()).map(each -> each.getName()).collect(Collectors.toList()));
+		
+		assertEquals("test1.txt=1.0,test2.txt=4.1,test3.txt=1.0", Joiner.on(",").join(folder.getChildren().stream().filter(o->o.isFile()).map(o->o.getName() + "=" +((SpFile)o).getVersion()).collect(Collectors.toList())));
 	}	
 }

@@ -15,15 +15,21 @@ import java.time.Instant;
 import com.google.common.base.MoreObjects;
 
 public class SpFile extends SpObject{
-	final int length;
+	private final int length;
+	private SpVersion version;
 
-	public SpFile(String name, String serverRelativeUrl, Instant timeLastModified, Instant timeCreated, int length) {
+	public SpFile(String name, String serverRelativeUrl, Instant timeLastModified, Instant timeCreated, int length, SpVersion version) {
 		super(name, serverRelativeUrl, timeLastModified, timeCreated);
 		this.length = length;
+		this.version = version;
 	}
 	
 	public int getLength() {
 		return length;
+	}
+	
+	public SpVersion getVersion() {
+		return version;
 	}
 	
 	@Override
@@ -39,6 +45,7 @@ public class SpFile extends SpObject{
 				.add("timeLastModified", timeLastModified)
 				.add("timeCreated", timeCreated)
 				.add("length", length)
+				.add("version", version)
 				.toString();
 	}
 }
