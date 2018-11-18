@@ -15,15 +15,14 @@ import java.time.Instant;
 import com.google.common.base.MoreObjects;
 
 public class SpFile extends SpObject{
-	//TODO: length should be int
-	final String length;
+	final int length;
 
-	public SpFile(String name, String serverRelativeUrl, Instant timeLastModified, Instant timeCreated, String length) {
+	public SpFile(String name, String serverRelativeUrl, Instant timeLastModified, Instant timeCreated, int length) {
 		super(name, serverRelativeUrl, timeLastModified, timeCreated);
 		this.length = length;
 	}
 	
-	public String getLength() {
+	public int getLength() {
 		return length;
 	}
 	

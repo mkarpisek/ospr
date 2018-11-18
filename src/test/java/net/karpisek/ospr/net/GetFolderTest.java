@@ -39,7 +39,7 @@ public class GetFolderTest {
 		assertEquals("/sites/test1site/Shared Documents", folder.getServerRelativeUrl());
 		assertEquals(Instant.parse("2018-11-10T16:25:33Z"), folder.getTimeLastModified());
 		assertEquals(Instant.parse("2018-10-27T08:08:40Z"), folder.getTimeCreated());
-		assertEquals("4", folder.getItemCount());
+		assertEquals(4, folder.getItemCount());
 		
 		ArrayList<String> expectedChildrenNames = Lists.newArrayList("Forms", "folder1" , "test1.txt", "test2.txt", "test3.txt");
 		List<String> actualChildrenNames = folder.getChildren().stream().map(each -> each.getName()).collect(Collectors.toList());

@@ -25,8 +25,7 @@ import com.google.common.collect.Lists;
 public class SpFolder extends SpObject{
 	private List<? extends SpObject> children;
 
-	//TODO: itemCount should be int
-	public SpFolder(String name, String serverRelativeUrl, Instant timeLastModified, Instant timeCreated, String itemCount, List<? extends SpObject> children) {
+	public SpFolder(String name, String serverRelativeUrl, Instant timeLastModified, Instant timeCreated, int itemCount, List<? extends SpObject> children) {
 		super(name, serverRelativeUrl, timeLastModified, timeCreated);
 		this.itemCount = itemCount;
 		this.children = Lists.newArrayList(children);
@@ -37,9 +36,9 @@ public class SpFolder extends SpObject{
 			}
 		});
 	}
-	final String itemCount;
+	final int itemCount;
 	
-	public String getItemCount() {
+	public int getItemCount() {
 		return itemCount;
 	}
 	

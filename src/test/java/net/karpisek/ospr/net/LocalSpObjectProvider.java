@@ -35,12 +35,12 @@ class LocalSpObjectProvider implements ISpObjectProvider{
 		List<SpFolder> folders = Files
 				.list(Paths.get(folder))
 				.filter(each -> Files.isDirectory(each))
-				.map(path -> new SpFolder(SpFilesTest.toUnixString(path.getFileName()), SpFilesTest.toUnixString(path), NOW, NOW, "", Lists.newArrayList()))
+				.map(path -> new SpFolder(SpFilesTest.toUnixString(path.getFileName()), SpFilesTest.toUnixString(path), NOW, NOW, 0, Lists.newArrayList()))
 				.collect(Collectors.toList());
 		List<SpFile> files = Files
 				.list(Paths.get(folder))
 				.filter(each -> !Files.isDirectory(each))
-				.map(path -> new SpFile(SpFilesTest.toUnixString(path.getFileName()), SpFilesTest.toUnixString(path), NOW,NOW,"1234567"))
+				.map(path -> new SpFile(SpFilesTest.toUnixString(path.getFileName()), SpFilesTest.toUnixString(path), NOW, NOW, 1234567))
 				.collect(Collectors.toList());
 		
 		List<SpObject> children = Lists.newArrayList();
@@ -51,7 +51,7 @@ class LocalSpObjectProvider implements ISpObjectProvider{
 				SpFilesTest.toUnixString(Paths.get(folder)), 
 				NOW, 
 				NOW, 
-				"",
+				0,
 				children
 				);
 	}		

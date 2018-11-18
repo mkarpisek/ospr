@@ -55,6 +55,14 @@ public class GetFolder {
 		return Instant.from(DateTimeFormatter.ISO_INSTANT.parse(text));
 	}
 	
+	public static int getChildInt(Element element, String cname, Namespace ns) {
+		String text = element.getChildText(cname, ns);
+		if(text == null) {
+			return 0;
+		}
+		return Integer.parseInt(text);
+	}
+
 	private Result authResult;
 	private URI siteUri;
 	private String folderServerRelativeUrl;
@@ -98,7 +106,7 @@ public class GetFolder {
 					properties.getChildText("ServerRelativeUrl", d), 
 					getChildInstant(properties, "TimeLastModified", d), 
 					getChildInstant(properties, "TimeCreated", d),
-					properties.getChildText("Length", d)
+					getChildInt(properties, "Length", d)
 				)
 			);
 		}		
@@ -112,7 +120,7 @@ public class GetFolder {
 					properties.getChildText("ServerRelativeUrl", d), 
 					getChildInstant(properties, "TimeLastModified", d),
 					getChildInstant(properties, "TimeCreated", d),
-					properties.getChildText("ItemCount", d),
+					getChildInt(properties, "ItemCount", d),
 					Lists.newArrayList()
 				)
 			);
@@ -126,7 +134,7 @@ public class GetFolder {
 			links5.get(0).getChildText("ServerRelativeUrl", d), 
 			getChildInstant(links5.get(0), "TimeLastModified", d),
 			getChildInstant(links5.get(0), "TimeCreated", d),
-			links5.get(0).getChildText("ItemCount", d),
+			getChildInt(links5.get(0), "ItemCount", d),
 			children
 		);
 	}
