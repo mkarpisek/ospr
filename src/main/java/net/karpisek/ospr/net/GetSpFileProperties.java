@@ -15,6 +15,7 @@ import java.io.StringReader;
 import java.net.URI;
 import java.time.Instant;
 import java.time.format.DateTimeFormatter;
+import java.util.EnumMap;
 import java.util.List;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.TimeoutException;
@@ -37,14 +38,16 @@ import org.slf4j.LoggerFactory;
 import com.google.common.base.Strings;
 import com.google.common.base.Verify;
 import com.google.common.collect.Lists;
+import com.google.common.collect.Maps;
 import com.google.common.net.UrlEscapers;
 
 import net.karpisek.ospr.net.SharepointOnlineAuthentication.Result;
+import net.karpisek.ospr.net.SpFileProperties.CoreProperty;
 
 /**
  * Answers information about request folder.
  */
-public class GetFolder {
+public class GetSpFileProperties {
 	private static final Logger LOG = LoggerFactory.getLogger(SharepointOnlineAuthentication.class);
 	
 	public static Instant getChildInstant(Element element, String cname, Namespace ns) {
@@ -65,17 +68,17 @@ public class GetFolder {
 
 	private Result authResult;
 	private URI siteUri;
-	private String folderServerRelativeUrl;
+	private String fileServerRelativeUrl;
 
-	public GetFolder(SharepointOnlineAuthentication.Result authResult, URI siteUri, String folderServerRelativeUrl) {
+	public GetSpFileProperties(SharepointOnlineAuthentication.Result authResult, URI siteUri, String folderServerRelativeUrl) {
 		this.authResult = authResult;
 		this.siteUri = siteUri;
-		this.folderServerRelativeUrl = folderServerRelativeUrl;
+		this.fileServerRelativeUrl = folderServerRelativeUrl;
 	}
 	
 	//TODO: would want to have better reaction for invalid (not found) folders 
-	public SpFolder execute(HttpClient httpClient) throws InterruptedException, TimeoutException, ExecutionException, IOException, JDOMException {
-		String url = siteUri + "/_api/Web/GetFolderByServerRelativeUrl(%27" + UrlEscapers.urlFragmentEscaper().escape(folderServerRelativeUrl) + "%27)?$expand=Folders,Files";
+	public SpFileProperties execute(HttpClient httpClient) throws InterruptedException, TimeoutException, ExecutionException, IOException, JDOMException {
+		String url = siteUri + "/_api/Web/GetFileByServerRelativePath(decodedurl=%27" + UrlEscapers.urlFragmentEscaper().escape(fileServerRelativeUrl) + "%27)/Properties";
 		
 		ContentResponse response = httpClient.newRequest(url).method(HttpMethod.GET).header("X-RequestDigest", authResult.getFormDigest()).send();
 		LOG.debug("statusCode={}", response.getStatus());
@@ -88,57 +91,34 @@ public class GetFolder {
 		return parse(content);
 	}
 	
-	public SpFolder parse(String xml) throws JDOMException, IOException {
+	public SpFileProperties parse(String xml) throws JDOMException, IOException {
 		SAXBuilder builder = new SAXBuilder();
 		Document doc = builder.build(new StringReader(xml));
 
+		//TODO: should extract common namespaces used in project + xpath handling on jdom2
 		Namespace a = Namespace.getNamespace("a", "http://www.w3.org/2005/Atom");
 		Namespace d = Namespace.getNamespace("d", "http://schemas.microsoft.com/ado/2007/08/dataservices");
 		Namespace m = Namespace.getNamespace("m", "http://schemas.microsoft.com/ado/2007/08/dataservices/metadata");
-		
-		List<SpObject> children = Lists.newArrayList();
-		XPathExpression<Element> filesExpr = XPathFactory.instance().compile("//a:feed/a:entry[a:category[@term='SP.File']]/a:content/m:properties", Filters.element(), null, a,d,m);
-		List<Element> filesElements = filesExpr.evaluate(doc);
-		for (Element properties : filesElements) {
-			SpVersion version = SpVersion.fromString(properties.getChildText("MajorVersion", d), properties.getChildText("MinorVersion", d));
 
-			children.add(
-				new SpFile(
-					properties.getChildText("Name", d), 
-					properties.getChildText("ServerRelativeUrl", d), 
-					getChildInstant(properties, "TimeLastModified", d), 
-					getChildInstant(properties, "TimeCreated", d),
-					getChildInt(properties, "Length", d),
-					version
-				)
-			);
-		}		
-		
-		XPathExpression<Element> foldersExpr = XPathFactory.instance().compile("//a:feed/a:entry[a:category[@term='SP.Folder']]/a:content/m:properties", Filters.element(), null, a,d,m);
-		List<Element> folderElements = foldersExpr.evaluate(doc);
-		for (Element properties : folderElements) {
-			children.add(
-				new SpFolder(
-					properties.getChildText("Name", d), 
-					properties.getChildText("ServerRelativeUrl", d), 
-					getChildInstant(properties, "TimeLastModified", d),
-					getChildInstant(properties, "TimeCreated", d),
-					getChildInt(properties, "ItemCount", d),
-					Lists.newArrayList()
-				)
-			);
-		}	
-		
-		XPathExpression<Element> expr5 = XPathFactory.instance().compile("/a:entry/a:content/m:properties", Filters.element(), null, a,d,m);
-		List<Element> links5 = expr5.evaluate(doc);
-		Verify.verify(links5.size() == 1, "This is strange, should be exactly one properties element about");
-		return new SpFolder(
-			links5.get(0).getChildText("Name", d), 
-			links5.get(0).getChildText("ServerRelativeUrl", d), 
-			getChildInstant(links5.get(0), "TimeLastModified", d),
-			getChildInstant(links5.get(0), "TimeCreated", d),
-			getChildInt(links5.get(0), "ItemCount", d),
-			children
-		);
+		//TODO: reworking mapping handling when more properties is needed (and if custom ones too)
+		EnumMap<SpFileProperties.CoreProperty, String> mapping = Maps.newEnumMap(SpFileProperties.CoreProperty.class);
+		mapping.put(CoreProperty.TITLE, "vti_x005f_title");
+		mapping.put(CoreProperty.SUBJECT, "Subject");
+		mapping.put(CoreProperty.COMMENT, "OData__x005f_Comments");
+		mapping.put(CoreProperty.KEYWORDS, "Keywords");
+		mapping.put(CoreProperty.AUTHOR, "OData__x005f_Author");
+
+		List<SpObject> children = Lists.newArrayList();
+		XPathExpression<Element> filesExpr = XPathFactory.instance().compile("//m:properties", Filters.element(), null, a,d,m);
+		List<Element> elements = filesExpr.evaluate(doc);
+		Verify.verify(elements.size() == 1, "Something strange, expected 1 properties element, found %s", elements.size());
+			
+		Element properties = elements.get(0);
+		EnumMap<SpFileProperties.CoreProperty, String> propertyValues = Maps.newEnumMap(SpFileProperties.CoreProperty.class);
+		for (CoreProperty property : SpFileProperties.CoreProperty.values()) {
+			String value = properties.getChildText(mapping.get(property), d);
+			propertyValues.put(property, Strings.nullToEmpty(value));
+		}
+		return new SpFileProperties(propertyValues);
 	}
 }

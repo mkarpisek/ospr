@@ -17,6 +17,8 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.time.Instant;
 import java.util.Date;
+import java.util.HashSet;
+import java.util.List;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.TimeoutException;
 import java.util.concurrent.atomic.AtomicInteger;
@@ -33,10 +35,13 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.google.common.collect.Lists;
+import com.google.common.collect.Sets;
 
 import net.karpisek.ospr.net.ISpFileVisitor;
 import net.karpisek.ospr.net.ISpObjectProvider;
 import net.karpisek.ospr.net.SpFile;
+import net.karpisek.ospr.net.SpFileProperties;
+import net.karpisek.ospr.net.SpFileProperties.CoreProperty;
 import net.karpisek.ospr.net.SpFiles;
 import net.karpisek.ospr.net.SpFolder;
 
@@ -65,21 +70,42 @@ public class SpFileTreeReporter{
 	        {
 	        	Row row = sheet.createRow(rowNum.getAndIncrement());
 	        	int colNumber = 0;
-	        	for (String colName : Lists.newArrayList("sp.name", "sp.serverRelativeUrl", "sp.timeLastModified", "sp.timeCreated", "sp.length", "sp.version")) {
+	        	List<String> header = Lists.newArrayList("sp.name", "sp.serverRelativeUrl", "sp.timeLastModified", "sp.timeCreated", "sp.length", "sp.version");
+
+	        	for (CoreProperty property : SpFileProperties.CoreProperty.values()) {
+	        		header.add("meta." + property.name().toLowerCase());
+				}
+	        	
+	        	for (String colName : header) {
 	        		row.createCell(colNumber++).setCellValue(colName);
 				}
 	        }
 			SpFiles.walkFileTree(objectProvider, path, 0, maxDepth, new ISpFileVisitor() {
 				@Override
 				public void visitFile(SpFile file) throws IOException {
-					int colNumber = 0;
+					AtomicInteger colNumber = new AtomicInteger();
 					Row row = sheet.createRow(rowNum.getAndIncrement());
-					row.createCell(colNumber++).setCellValue(file.getName());
-					row.createCell(colNumber++).setCellValue(file.getServerRelativeUrl());
-					createTimestampCell(row, colNumber++, file.getTimeLastModified());
-					createTimestampCell(row, colNumber++, file.getTimeCreated());
-					row.createCell(colNumber++).setCellValue(file.getLength());
-					row.createCell(colNumber++).setCellValue(file.getVersion().toString());
+					row.createCell(colNumber.getAndIncrement()).setCellValue(file.getName());
+					row.createCell(colNumber.getAndIncrement()).setCellValue(file.getServerRelativeUrl());
+					createTimestampCell(row, colNumber.getAndIncrement(), file.getTimeLastModified());
+					createTimestampCell(row, colNumber.getAndIncrement(), file.getTimeCreated());
+					row.createCell(colNumber.getAndIncrement()).setCellValue(file.getLength());
+					row.createCell(colNumber.getAndIncrement()).setCellValue(file.getVersion().toString());
+					
+					//TODO: make this configurable, add other possible office extensions
+					HashSet<String> supported = Sets.newHashSet(".doc", ".docx", ".xls", ".xlsx", ".ppt", ".pptx");
+					if(supported.stream().anyMatch(extension -> file.getName().toLowerCase().endsWith(extension))) {
+						try {
+							SpFileProperties properties = objectProvider.getSpFileProperties(file.getServerRelativeUrl());
+							properties.keysAndValuesDo((property, value) -> {
+								row.createCell(colNumber.getAndIncrement()).setCellValue(value);
+							});
+							
+						} catch (InterruptedException | TimeoutException | ExecutionException | JDOMException e) {
+							//TODO: rework exception handling in visitor and also here
+							throw new IOException(e);
+						}
+					}
 				}
 	
 				@Override

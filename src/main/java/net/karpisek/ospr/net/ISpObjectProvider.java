@@ -16,6 +16,8 @@ import java.util.concurrent.TimeoutException;
 
 import org.jdom2.JDOMException;
 
+//TODO: fix exception handling
 public interface ISpObjectProvider {
 	SpFolder getFolder(String folder) throws InterruptedException, TimeoutException, ExecutionException, IOException, JDOMException;
+	SpFileProperties getSpFileProperties(String file) throws InterruptedException, TimeoutException, ExecutionException, IOException, JDOMException;
 }

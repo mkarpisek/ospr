@@ -22,6 +22,7 @@ import java.util.stream.Collectors;
 import org.jdom2.JDOMException;
 
 import com.google.common.collect.Lists;
+import com.google.common.collect.Maps;
 
 /**
  * Provider of sharepoint files library object information using local file system.
@@ -54,5 +55,11 @@ class LocalSpObjectProvider implements ISpObjectProvider{
 				0,
 				children
 				);
+	}
+
+	@Override
+	public SpFileProperties getSpFileProperties(String file)
+			throws InterruptedException, TimeoutException, ExecutionException, IOException, JDOMException {
+		return new SpFileProperties(Maps.newEnumMap(SpFileProperties.CoreProperty.class));
 	}		
 }

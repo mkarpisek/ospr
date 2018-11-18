@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+    Copyright (c) 2018 Martin Karpisek and others.
+    All rights reserved. This program and the accompanying materials
+    are made available under the terms of the Eclipse Public License v2.0
+    which accompanies this distribution, and is available at
+    https://www.eclipse.org/legal/epl-v20.html
+   
+    Contributors:
+        Martin Karpisek <martin.karpisek@gmail.com> - initial API and implementation 
+ -->
+
+<entry xml:base="https://testovaci327.sharepoint.com/sites/test1site/_api/" xmlns="http://www.w3.org/2005/Atom" xmlns:d="http://schemas.microsoft.com/ado/2007/08/dataservices" xmlns:m="http://schemas.microsoft.com/ado/2007/08/dataservices/metadata" xmlns:georss="http://www.georss.org/georss"
+  xmlns:gml="http://www.opengis.net/gml">
+  <id>https://testovaci327.sharepoint.com/sites/test1site/_api/Web/GetFileByServerRelativePath(decodedurl='/sites/test1site/Shared Documents/test.docx')/Properties</id>
+  <category term="SP.PropertyValues" scheme="http://schemas.microsoft.com/ado/2007/08/dataservices/scheme"
+  />
+  <link rel="edit" href="Web/GetFileByServerRelativePath(decodedurl='/sites/test1site/Shared%20Documents/test.docx')/Properties" />
+  <title />
+  <updated>2018-11-18T19:31:13Z</updated>
+  <author>
+    <name />
+  </author>
+  <content type="application/xml">
+    <m:properties>
+      <d:vti_x005f_internalversion m:type="Edm.Int32">769</d:vti_x005f_internalversion>
+      <d:vti_x005f_docstoretype m:type="Edm.Int32">0</d:vti_x005f_docstoretype>
+      <d:vti_x005f_lastbitssessionid>77b3bf44-a52e-42b9-b137-82c5463b3690</d:vti_x005f_lastbitssessionid>
+      <d:vti_x005f_metadatanextbsn>409</d:vti_x005f_metadatanextbsn>
+      <d:vti_x005f_cobalt_x005f_NewInSession_x005f_i_x003a_0_x0023__x002e_f_x007c_membership_x007c_test1_x0040_testovaci327_x002e_onmicrosoft_x002e_com>true</d:vti_x005f_cobalt_x005f_NewInSession_x005f_i_x003a_0_x0023__x002e_f_x007c_membership_x007c_test1_x0040_testovaci327_x002e_onmicrosoft_x002e_com>
+      <d:OData__x005f_Comments>comment text</d:OData__x005f_Comments>
+      <d:vti_x005f_coauthmetadatanextbsn>100</d:vti_x005f_coauthmetadatanextbsn>
+      <d:vti_x005f_cachedsupportspoundlinks m:type="Edm.Int32">1</d:vti_x005f_cachedsupportspoundlinks>
+      <d:vti_x005f_docstoreversion m:type="Edm.Int32">3</d:vti_x005f_docstoreversion>
+      <d:vti_x005f_parentid>{2669020C-3DA6-4926-B145-85B19EC4DF60}</d:vti_x005f_parentid>
+      <d:vti_x005f_setuppathversion m:type="Edm.Int32">16</d:vti_x005f_setuppathversion>
+      <d:vti_x005f_lastbitscommit>2;#2669020c-3da6-4926-b145-85b19ec4df60;#test.docx;#77b3bf44-a52e-42b9-b137-82c5463b3690;#"{3B9FD209-E5A9-4E10-8748-53B9039E9448},2";#"{3B9FD209-E5A9-4E10-8748-53B9039E9448},3";#0x02AD95C9C3EE595748F91E5FE034C12D8FA1A98420;#4157;#0</d:vti_x005f_lastbitscommit>
+      <d:vti_x005f_rtag>rt:3B9FD209-E5A9-4E10-8748-53B9039E9448@00000000003</d:vti_x005f_rtag>
+      <d:vti_x005f_contentchangeunit></d:vti_x005f_contentchangeunit>
+      <d:vti_x005f_sourcecontrolcookie>fp_internal</d:vti_x005f_sourcecontrolcookie>
+      <d:Subject>Subject text</d:Subject>
+      <d:vti_x005f_filesize m:type="Edm.Int32">11950</d:vti_x005f_filesize>
+      <d:vti_x005f_modifiedby>i:0#.f|membership|test1@testovaci327.onmicrosoft.com</d:vti_x005f_modifiedby>
+      <d:vti_x005f_title>Title text</d:vti_x005f_title>
+      <d:vti_x005f_streamschema m:type="Edm.Int32">66</d:vti_x005f_streamschema>
+      <d:vti_x005f_contentversion m:type="Edm.Int32">3</d:vti_x005f_contentversion>
+      <d:vti_x005f_nextbsn>564</d:vti_x005f_nextbsn>
+      <d:vti_x005f_candeleteversion>true</d:vti_x005f_candeleteversion>
+      <d:vti_x005f_parserversion>16.0.0.8307</d:vti_x005f_parserversion>
+      <d:Keywords>keyword1 keyword2</d:Keywords>
+      <d:vti_x005f_previewnextbsnalloc>179</d:vti_x005f_previewnextbsnalloc>
+      <d:vti_x005f_complianceflags m:type="Edm.Int32">0</d:vti_x005f_complianceflags>
+      <d:vti_x005f_previewexists>false</d:vti_x005f_previewexists>
+      <d:vti_x005f_TimeOfLastCobaltVersionCreation m:type="Edm.DateTime">2018-11-18T19:31:04</d:vti_x005f_TimeOfLastCobaltVersionCreation>
+      <d:vti_x005f_author>i:0#.f|membership|test1@testovaci327.onmicrosoft.com</d:vti_x005f_author>
+      <d:vti_x005f_thumbnailexists>false</d:vti_x005f_thumbnailexists>
+      <d:vti_x005f_writevalidationtoken>rZXJw+5ZV0j5Hl/gNMEtj6GphCA=</d:vti_x005f_writevalidationtoken>
+      <d:vti_x005f_previewnextbsn>179</d:vti_x005f_previewnextbsn>
+      <d:vti_x005f_pluggableparserversion>16.0.0.8307</d:vti_x005f_pluggableparserversion>
+      <d:vti_x005f_timelastwritten m:type="Edm.DateTime">2018-11-18T19:31:05</d:vti_x005f_timelastwritten>
+      <d:vti_x005f_ZeroByteFileIsOverwriteable>false</d:vti_x005f_ZeroByteFileIsOverwriteable>
+      <d:vti_x005f_metainfoversion m:type="Edm.Int32">9</d:vti_x005f_metainfoversion>
+      <d:vti_x005f_stickycachedpluggableparserprops>Subject Keywords _Status vti_title _Author _Category ContentType _Comments</d:vti_x005f_stickycachedpluggableparserprops>
+      <d:vti_x005f_contenttag>{3B9FD209-E5A9-4E10-8748-53B9039E9448},3,3</d:vti_x005f_contenttag>
+      <d:vti_x005f_contentversionisdirty>false</d:vti_x005f_contentversionisdirty>
+      <d:vti_x005f_canmaybeedit>true</d:vti_x005f_canmaybeedit>
+      <d:vti_x005f_nextbsnallocated>564</d:vti_x005f_nextbsnallocated>
+      <d:OData__x005f_Status></d:OData__x005f_Status>
+      <d:vti_x005f_durablestreammetadatanextbsn>100</d:vti_x005f_durablestreammetadatanextbsn>
+      <d:vti_x005f_sourcecontrolversion>V2.0</d:vti_x005f_sourcecontrolversion>
+      <d:vti_x005f_foldersubfolderitemcount m:type="Edm.Int32">0</d:vti_x005f_foldersubfolderitemcount>
+      <d:vti_x005f_folderitemcount m:type="Edm.Int32">0</d:vti_x005f_folderitemcount>
+      <d:vti_x005f_replid>rid:{3B9FD209-E5A9-4E10-8748-53B9039E9448}</d:vti_x005f_replid>
+      <d:vti_x005f_dbschemaversion>16.0.174.0</d:vti_x005f_dbschemaversion>
+      <d:OData__x005f_Author>Martin Karpisek</d:OData__x005f_Author>
+      <d:ContentType></d:ContentType>
+      <d:vti_x005f_bsn>564</d:vti_x005f_bsn>
+      <d:vti_x005f_nexttolasttimemodified m:type="Edm.DateTime">2018-11-18T19:26:02</d:vti_x005f_nexttolasttimemodified>
+      <d:vti_x005f_listid>{5A1C13AA-54FA-4997-A3C3-37D4B600BD06}</d:vti_x005f_listid>
+      <d:vti_x005f_iplabelid></d:vti_x005f_iplabelid>
+      <d:OData__x005f_Category></d:OData__x005f_Category>
+      <d:vti_x005f_principalcount m:type="Edm.Int32">3</d:vti_x005f_principalcount>
+      <d:vti_x005f_streamhash>0x02509B21B58B9067E950F8C3CBB05B202F4CD32A3F</d:vti_x005f_streamhash>
+      <d:vti_x005f_sprocsschemaversion>16.0.332.0</d:vti_x005f_sprocsschemaversion>
+      <d:vti_x005f_level m:type="Edm.Int32">1</d:vti_x005f_level>
+      <d:vti_x005f_timelastmodified m:type="Edm.DateTime">2018-11-18T19:31:05</d:vti_x005f_timelastmodified>
+      <d:vti_x005f_docviznextbsn>100</d:vti_x005f_docviznextbsn>
+      <d:vti_x005f_etag>"{3B9FD209-E5A9-4E10-8748-53B9039E9448},3"</d:vti_x005f_etag>
+      <d:vti_x005f_timecreated m:type="Edm.DateTime">2018-11-18T19:26:02</d:vti_x005f_timecreated>
+    </m:properties>
+  </content>
+</entry>

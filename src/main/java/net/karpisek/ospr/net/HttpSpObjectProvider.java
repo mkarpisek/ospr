@@ -43,4 +43,10 @@ public class HttpSpObjectProvider implements ISpObjectProvider {
 		return new GetFolder(authResult, uri, folder).execute(httpClient);
 	}
 
+	@Override
+	public SpFileProperties getSpFileProperties(String file)
+			throws InterruptedException, TimeoutException, ExecutionException, IOException, JDOMException {
+		return new GetSpFileProperties(authResult, uri, file).execute(httpClient);
+	}
+
 }
