@@ -16,6 +16,7 @@
 	<artifactId>net.karpisek.ospr</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
 	<properties>
+		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<maven.compiler.source>1.8</maven.compiler.source>
 		<maven.compiler.target>1.8</maven.compiler.target>
 	</properties>
@@ -128,6 +129,7 @@
 									<mainClass>net.karpisek.ospr.Ospr</mainClass>
 								</transformer>
 							</transformers>
+							<dependencyReducedPomLocation>${project.build.directory}/dependency-reduced-pom.xml</dependencyReducedPomLocation>
 						</configuration>
 					</execution>
 				</executions>
@@ -168,6 +170,32 @@
 					</systemPropertyVariables>
 				</configuration>
 			</plugin>
+			<plugin>
+				<groupId>com.github.spotbugs</groupId>
+				<artifactId>spotbugs-maven-plugin</artifactId>
+				<version>3.1.8</version>
+				<configuration>
+					<xmlOutput>true</xmlOutput>
+					<xmlOutputDirectory>spotbugs-reports</xmlOutputDirectory>
+					<failOnError>false</failOnError>
+				</configuration>
+				<executions>
+					<execution>
+						<goals>
+							<goal>check</goal>
+						</goals>
+					</execution>
+				</executions>
+			</plugin>
 		</plugins>
 	</build>
+	<reporting>
+		<plugins>
+			<plugin>
+				<groupId>com.github.spotbugs</groupId>
+				<artifactId>spotbugs-maven-plugin</artifactId>
+				<version>3.1.8</version>
+			</plugin>
+		</plugins>
+	</reporting>
 </project>

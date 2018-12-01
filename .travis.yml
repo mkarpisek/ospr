@@ -12,7 +12,7 @@ addons:
         organization: "mkarpisek-github"
         
 install: true
-script: mvn clean package sonar:sonar
+script: mvn clean verify sonar:sonar
 
 after_success:
     - bash <(curl -s https://codecov.io/bash)
