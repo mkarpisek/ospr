@@ -37,6 +37,7 @@ public class SpFilesTest {
 		List<String> expected = Lists.newArrayList();
 		expected.add("preVisitFolder=documents");
 		expected.add("visitFile=test.docx");
+		expected.add("visitFile=test.pdf");
 		expected.add("visitFile=test.pptx");
 		expected.add("visitFile=test.txt");
 		expected.add("visitFile=test.xlsx");
@@ -77,6 +78,7 @@ public class SpFilesTest {
 		List<String> expected = Lists.newArrayList();
 		expected.add("preVisitFolder=documents");
 		expected.add("visitFile=test.docx");
+		expected.add("visitFile=test.pdf");
 		expected.add("visitFile=test.pptx");
 		expected.add("visitFile=test.txt");
 		expected.add("visitFile=test.xlsx");
@@ -107,6 +109,7 @@ public class SpFilesTest {
 		List<String> expected = Lists.newArrayList();
 		expected.add("preVisitFolder=documents");
 		expected.add("visitFile=test.docx");
+		expected.add("visitFile=test.pdf");
 		expected.add("visitFile=test.pptx");
 		expected.add("visitFile=test.txt");
 		expected.add("visitFile=test.xlsx");
